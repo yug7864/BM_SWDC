@@ -52,12 +52,10 @@ public class MainAppActivity extends Activity {
             플로팅 버튼 , 리싸이클러뷰 , 리싸이클러뷰 스와이프 기능 까지 전부 정의
         */
         initViews();
-
         /*
             새로운 아이템 생성 , 수정시 이동되는 액비비티 , 팝업창을 정의하고 초기화
          */
         initDialog(); // 팝업창 초기화
-
     }
 
     private void initViews() {
