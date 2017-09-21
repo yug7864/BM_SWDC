@@ -12,12 +12,24 @@
 
 
         <EditText
-            android:id="@+id/emailInput"
+            android:id="@+id/serverInput"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="151dp"
-            android:hint="Email" />
+            android:layout_marginTop="90dp"
+            android:hint="Server Name"
+            android:singleLine="true"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/emailInput"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:textSize="18sp"
+            android:layout_below="@+id/serverInput"
+            android:layout_centerHorizontal="true"
+            android:hint="Email"
+            android:singleLine="true" />
 
         <EditText
             android:id="@+id/passwordInput"
@@ -25,7 +37,10 @@
             android:layout_height="50dp"
             android:layout_below="@+id/emailInput"
             android:layout_centerHorizontal="true"
-            android:hint="Password" />
+            android:hint="Password"
+            android:password="true"
+            android:singleLine="true"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/LoginButton"
@@ -34,9 +49,9 @@
             android:layout_below="@+id/passwordInput"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
+            android:background="#EDBB09"
             android:text="Login"
-            android:textAllCaps="false"
-            android:background="#EDBB09"/>
+            android:textAllCaps="false" />
 
         <CheckBox
             android:id="@+id/RememberCheck"

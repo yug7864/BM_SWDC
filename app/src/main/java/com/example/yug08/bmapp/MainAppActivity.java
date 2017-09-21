@@ -46,7 +46,6 @@ public class MainAppActivity extends Activity {
         super.onCreate(savedInstanceState);
         //엑티비티 레이아웃 설정
         setContentView(R.layout.activity_main);
-
         /*
             액티비티에서 보여주는 뷰 초기화
             플로팅 버튼 , 리싸이클러뷰 , 리싸이클러뷰 스와이프 기능 까지 전부 정의

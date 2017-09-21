@@ -5,21 +5,37 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
+/*
+    로그인 엑티비티 서버 , id , ps 필요
+ */
 public class MainActivity extends AppCompatActivity {
     Button BtnLogin;
+
+    EditText inputID,inputServer,inputPS;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loginactivity);
-
-        BtnLogin = (Button) findViewById(R.id.LoginButton);
-
         /*
             로그인 버튼 로그인 되면 메인앱 화면으로 전환시켜줌
             # [ID, 서버 , 비번 , DB 값] 인텐트로 넘겨야됨 구현 필요 우선도 낮음
+         */
+    }
+
+    void initview()
+    {
+        inputID = (EditText) findViewById(R.id.emailInput);
+        inputID = (EditText) findViewById(R.id.passwordInput);
+        inputID = (EditText) findViewById(R.id.serverInput);
+        BtnLogin = (Button) findViewById(R.id.LoginButton);
+
+        /*
+            로그인 버튼 이벤트 정의
          */
         BtnLogin.setOnClickListener(new View.OnClickListener()
         {
