@@ -6,12 +6,12 @@ package com.example.yug08.bmapp;
         import android.widget.EditText;
 
 /**
- * Created by yug08 on 2017-09-04.
+// * Created by yug08 on 2017-09-04.
  */
 
 public class Register extends Activity
 {
-//    EditText ET_User_Nmae,ET_Name,ET,_Pass;
+    EditText ET_User_Nmae,ET_Name,ET,_Pass;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
