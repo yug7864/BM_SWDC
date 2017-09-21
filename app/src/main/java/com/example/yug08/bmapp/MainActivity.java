@@ -36,8 +36,4 @@ public class MainActivity extends AppCompatActivity {
         로그인 데이터를 서버에 매칭해서 서버에 등록된 사용자일 경우에만 로그인 허용
         # DB의 로그인 테이블 비교하는 소스를 짜야됨 힘들다 ... DB 1도 모른다 ㅠㅠ
      */
-    public  void userLogin(View view)
-    {
-        startActivity(new Intent(this, Register.class));
-    }
 }
