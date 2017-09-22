@@ -1,6 +1,8 @@
 /**
  * Created by yug08 on 2017-09-04.
  * 메인엡 엑비티비 클레스  실재 앱 컨트롤 클레스
+ * @17-09-21
+ * GIT 추가
  */
 
 package com.example.yug08.BM_SWDC_yslee;
