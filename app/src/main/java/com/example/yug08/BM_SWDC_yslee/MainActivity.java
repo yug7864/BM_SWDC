@@ -1,9 +1,9 @@
-package com.example.yug08.bmapp;
+package com.example.yug08.BM_SWDC_yslee;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,12 +29,12 @@ import java.util.Map;
  */
 public class MainActivity extends AppCompatActivity {
 
+    public static String Login = "/webapp/user_control.php/";
+    public String URL = "http://118.39.231.49:8080/webapp/user_control.php";
     private Button BtnLogin;
     private EditText inputID, inputServer, inputPS;
     private AlertDialog dialog;
     private RequestQueue requestQueue;
-    public String URL = "http://118.39.231.49:8080/webapp/user_control.php";
-    public static String Login = "/webapp/user_control.php/";
     private StringRequest request;
 
     @Override

@@ -1,4 +1,4 @@
-package com.example.yug08.bmapp.Item;
+package com.example.yug08.BM_SWDC_yslee.Item;
 
 /**
  * Created by yug08 on 2017-09-20.
@@ -9,5 +9,5 @@ package com.example.yug08.bmapp.Item;
 
  */
 public enum Type {
-    Bulb ,   Win
+    Bulb, Win
 }

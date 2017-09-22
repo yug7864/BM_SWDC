@@ -3,7 +3,7 @@
  * 메인엡 엑비티비 클레스  실재 앱 컨트롤 클레스
  */
 
-package com.example.yug08.bmapp;
+package com.example.yug08.BM_SWDC_yslee;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -22,16 +22,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.example.yug08.bmapp.Item.*;
+import com.example.yug08.BM_SWDC_yslee.Item.IoTItem;
+import com.example.yug08.BM_SWDC_yslee.Item.IotAdapter;
 
 import java.util.ArrayList;
 
 
 public class MainAppActivity extends Activity {
     private static final String TAG = "MainAppActivity"; // 디버깅용 Class name
-
-    private FloatingActionButton Fbtn;
     IotAdapter iotAdapter;
+    private FloatingActionButton Fbtn;
     private RecyclerView recyclerView;
     private ArrayList<IoTItem> items = new ArrayList<>();
     private AlertDialog.Builder alertDialog;
@@ -58,7 +58,7 @@ public class MainAppActivity extends Activity {
     }
 
     private void initViews() {
-        Fbtn = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+        Fbtn = findViewById(R.id.floatingActionButton);
         //플로팅 액션 버튼 이벤트정의
         Fbtn.setOnClickListener(new FloatingActionButton.OnClickListener() {
             @Override
@@ -72,7 +72,7 @@ public class MainAppActivity extends Activity {
             }
         });
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -171,7 +171,7 @@ public class MainAppActivity extends Activity {
                 }
             }
         });
-        et_country = (EditText) view.findViewById(R.id.et_country);
+        et_country = view.findViewById(R.id.et_country);
     }
 
 }

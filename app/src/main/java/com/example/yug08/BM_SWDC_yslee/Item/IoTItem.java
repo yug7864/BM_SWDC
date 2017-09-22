@@ -1,21 +1,18 @@
-package com.example.yug08.bmapp.Item;
+package com.example.yug08.BM_SWDC_yslee.Item;
 
-import android.os.Parcelable;
-import android.widget.ImageButton;
-
-import com.example.yug08.bmapp.R;
+import com.example.yug08.BM_SWDC_yslee.R;
 
 // 리스트에 추가할 아이템 여기서 아이템은 센서당!
 
 public class IoTItem {
 
     int debug;
+    int ONImagResid;
+    int OffImagResid;
     private boolean on_off = true;
     private String Nmae;
     private Type type = Type.Bulb;
     private int imag_resId;
-    int ONImagResid;
-    int OffImagResid;
 
     IoTItem() {
     }
@@ -55,10 +52,7 @@ public class IoTItem {
         클릭하면 이미지 상태 변경 된다.
      */
     void iotclick() {
-        if (on_off)
-            on_off = false;
-        else
-            on_off = true;
+        on_off = !on_off;
 
         chengeImag();
     }
@@ -96,23 +90,23 @@ public class IoTItem {
         return Nmae;
     }
 
-    public int getDebug() {
-        return debug;
-    }
-
     public void setNmae(String Name) {
         this.Nmae = Name;
+    }
+
+    public int getDebug() {
+        return debug;
     }
 
     public void setState(boolean on_off) {
         this.on_off = on_off;
     }
 
-    public void setType(Type type) {
-        this.type = type;
-    }
-
     public Type getType() {
         return this.type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 }

@@ -7,8 +7,8 @@
 //import android.view.View;
 //import android.widget.ImageButton;
 //
-//import com.example.yug08.bmapp.Item.IoTItem;
-//import com.example.yug08.bmapp.Item.Type;
+//import IoTItem;
+//import Type;
 //import com.example.yug08.bmapp.R;
 //
 //
