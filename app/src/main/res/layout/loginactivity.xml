@@ -28,7 +28,7 @@
             android:textSize="18sp"
             android:layout_below="@+id/serverInput"
             android:layout_centerHorizontal="true"
-            android:hint="Email"
+            android:hint="ID"
             android:singleLine="true" />
 
         <EditText
@@ -51,7 +51,7 @@
             android:layout_marginTop="20dp"
             android:background="#EDBB09"
             android:text="Login"
-            android:textAllCaps="false" />
+             />
 
         <CheckBox
             android:id="@+id/RememberCheck"
