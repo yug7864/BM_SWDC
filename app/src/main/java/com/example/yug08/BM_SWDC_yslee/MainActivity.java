@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
                 request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                     @Override
-                    // 로그인에 성공한다면
+                    // 로그인에 성공한다면 json 파싱 , ID 비교 결과에 따라 메인 엑티비티 이동
                     public void onResponse(String response) {
                         try {
                             // json 받아서 파싱
