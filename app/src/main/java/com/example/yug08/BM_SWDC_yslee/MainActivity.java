@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -18,8 +19,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -135,6 +138,18 @@ public class MainActivity extends AppCompatActivity {
         http 리퀘스트를 사용해 입력한 서버로 로그인 리퀘스트를 날립니다.
         IOT 서버 안에 Login PHP 스크립터 경로가 다르다면
         클레스 맴버변수로 있는 경로를 수정해줘야 합니다.
+         @ 17-09-19
+        로그인 씨스템 구현 해야됨
+        @ 17-09-22
+        @ 구현 1차 완료 결과 부분적 성공
+        @ ip 번호 입력시 로그인 가능함 , 도메인 입력시 안됨..
+        @ 도메인 서버에서 넘어갈떄 나오는 값이 문제인건지 도메인 넣어다 하면 안됨 ... ㅠㅠㅠ
+        @ 17-09-23
+        @ 도메인 안되는 이유를 못찾겠음 ...
+        @ 아마 도메인 세팅하는 파트에서 잘못해서 그런거 같음
+        @ 왜안되지 ...
+        @ 17-09-25
+        @ 도메인으로 넘기는거 포기!
      */
     void login() {
         URL = "http://" + inputServer.getText().toString() + Login;
@@ -143,28 +158,25 @@ public class MainActivity extends AppCompatActivity {
         Log.d("asd", "로그인!!!!!");
         request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
-            // 로그인에 성공한다면 json 파싱 , ID 비교 결과에 따라 메인 엑티비티 이동
             public void onResponse(String response) {
-                try {
-                    // json 받아서 파싱
+                try {                               // json 받아서 파싱
                     JSONObject jsonObject = new JSONObject(response);
 
-                    // success json 존제 하면 참이겠지?
                     if (jsonObject.names().get(0).equals("success")) {
                         Toast.makeText(getApplicationContext(), "주인님 방갑습니다." +
                                 jsonObject.getString("success"), Toast.LENGTH_SHORT).show();
 
-                        // 매인 앱 액티비티로 이동
                         startActivity(new Intent(getApplicationContext(), MainAppActivity.class));
-                    }
-                    // 실패시 json 에러 값 출력;
-                    else {
+                    } else {
                         Toast.makeText(getApplicationContext(),
                                 jsonObject.getString("error"),
                                 Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),
+                            "서버 상태 혹은 서버 주소를 확인하세요.",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -183,19 +195,6 @@ public class MainActivity extends AppCompatActivity {
         };
         requestQueue.add(request);
 
-        /*
-        @ 17-09-19
-        로그인 씨스템 구현 해야됨
-        @ 17-09-22
-        @ 구현 1차 완료 결과 부분적 성공
-        @ ip 번호 입력시 로그인 가능함 , 도메인 입력시 안됨..
-        @ 도메인 서버에서 넘어갈떄 나오는 값이 문제인건지 도메인 넣어다 하면 안됨 ... ㅠㅠㅠ
-        @ 17-09-23
-        @ 도메인 안되는 이유를 못찾겠음 ...
-        @ 아마 도메인 세팅하는 파트에서 잘못해서 그런거 같음
-        @ 왜안되지 ...
-        @ 17-09-25
-        @ 도메인으로 넘기는거 포기!
-     */
+
     }
 }
