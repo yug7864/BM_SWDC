@@ -166,7 +166,9 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "주인님 방갑습니다." +
                                 jsonObject.getString("success"), Toast.LENGTH_SHORT).show();
 
-                        startActivity(new Intent(getApplicationContext(), MainAppActivity.class));
+                        Intent intent = new Intent(getApplicationContext(),MainAppActivity.class);
+                        intent.putExtra("id",inputID.getText().toString());     // 로그인시 아이디를 넘겨줍니다.
+                        startActivity(intent);
                     } else {
                         Toast.makeText(getApplicationContext(),
                                 jsonObject.getString("error"),

@@ -9,12 +9,15 @@ package com.example.yug08.BM_SWDC_yslee;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +35,7 @@ import java.util.ArrayList;
 
 public class MainAppActivity extends Activity {
     private static final String TAG = "MainAppActivity"; // 디버깅용 Class name
+    private String ID;
     IotAdapter iotAdapter;
     private FloatingActionButton Fbtn;
     private RecyclerView recyclerView;
@@ -42,26 +46,50 @@ public class MainAppActivity extends Activity {
     private View view;
     private boolean add = false;
     private Paint paint = new Paint();
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //엑티비티 레이아웃 설정
+        /* 엑티비티 레이아웃 설정 */
         setContentView(R.layout.activity_main);
+        /*
+            로그인 할떄 입력한 ID 값을 가지고옴
+            유저 ID로 만든 테이블을 가지고 올떄 사용할예정
+         */
+        Intent intent = getIntent();
+        ID = intent.getStringExtra("id");
         /*
             액티비티에서 보여주는 뷰 초기화
             플로팅 버튼 , 리싸이클러뷰 , 리싸이클러뷰 스와이프 기능 까지 전부 정의
         */
         initViews();
+
         /*
             새로운 아이템 생성 , 수정시 이동되는 액비비티 , 팝업창을 정의하고 초기화
          */
-        initDialog(); // 팝업창 초기화
+        initDialog();
     }
 
     private void initViews() {
         Fbtn = findViewById(R.id.floatingActionButton);
-        //플로팅 액션 버튼 이벤트정의
+        sharedPreferences = getSharedPreferences(ID,Activity.MODE_PRIVATE);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        iotAdapter = new IotAdapter(items);
+        recyclerView.setAdapter(iotAdapter);
+        eventinit();
+    }
+
+    private void eventinit(){
+        /* 플로팅 액션 버튼 이벤트정의 */
         Fbtn.setOnClickListener(new FloatingActionButton.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,17 +102,35 @@ public class MainAppActivity extends Activity {
             }
         });
 
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
-
-        iotAdapter = new IotAdapter(items);
-        recyclerView.setAdapter(iotAdapter);
+        /* 리사이클러뷰 스와이프 관련 이벤트, 기능 정의*/
         initSwipe();
+
+        /*당겨서 새로고침 이벤트 정의*/
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+            /*
+                onRefresh 안에 기능을 정의 하면 됩니다.
+                @ 함수로 만들어서 호출 시킬 꺼임
+             */
+            @Override
+            public void onRefresh() {
+                // false 안해주면 뻉글 뺑글이 계속 도니깐 꼮 false
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+         /*
+            새로 고침시 나오는 뻉글뻉글이 색상을 바꿀수 있음
+            한바퀴 돌때마다 위에서 부터 순차적으로 색이 바뀜
+         */
+        swipeRefreshLayout.setColorSchemeResources(
+                android.R.color.holo_blue_dark,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light
+        );
     }
 
-    //스와이프 관련 기능 초기화 이벤트 에니메이션 정의
+    /*리사이클러뷰 스와이프 관련 기능 초기화 이벤트 에니메이션 정의*/
     private void initSwipe() {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback
                 = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -124,11 +170,13 @@ public class MainAppActivity extends Activity {
                     float height = (float) itemView.getBottom() - (float) itemView.getTop();
                     float width = height / 3;
 
+
                     if (dX > 0) {
-                        paint.setColor(Color.parseColor("#388E3C"));
+                        paint.setColor(Color.parseColor("#999999"));
                         RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom());
                         c.drawRect(background, paint);
-                    } else {
+                    }
+                    else {
                         paint.setColor(Color.parseColor("#D32F2F"));
                         RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
                         c.drawRect(background, paint);
@@ -141,12 +189,13 @@ public class MainAppActivity extends Activity {
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    // 스와이프 기능으로 해당 아이템 지우는 기능 정의
+    /* 스와이프 기능으로 해당 아이템 지우는 기능 정의 */
     private void removeView() {
         if (view.getParent() != null)
             ((ViewGroup) view.getParent()).removeView(view);
     }
 
+    /* 리사이클러뷰 동작에 대한 기능 호출 정의*/
     private void initDialog() {
         alertDialog = new AlertDialog.Builder(this);
         view = getLayoutInflater().inflate(R.layout.dialog_layout, null);
@@ -157,13 +206,14 @@ public class MainAppActivity extends Activity {
                 //추가하면 각 아이템 요소가 더해지는 부분
                 if (add) {
                     add = false;
-                    iotAdapter.addItem(new IoTItem(et_country.getText().toString(), R.mipmap.lightingball_on));
-                    // Intent intent = new Intent(MainAppActivity.this, IoTSettingActivity1st.class); // 엑티비티간 오브젝트 넘기는 법 찾아야된다 .
-                    /*
+
+                    IoTItem newItem = new IoTItem(et_country.getText().toString(), R.mipmap.lightingball_on);
+                    /* @ 구현이 필요합니다.
+                        Intent intent = new Intent(MainAppActivity.this, IoTSettingActivity1st.class); // 엑티비티간 오브젝트 넘기는 법 찾아야된다 .
                         https://medium.com/@henen/%EB%B9%A0%EB%A5%B4%EA%B2%8C-%EB%B0%B0%EC%9A%B0%EB%8A%94-%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-intent-4-%EB%82%B4%EA%B0%80-%EB%A7%8C%EB%93%A0-class%EB%A5%BC-%EC%A0%84%EC%86%A1-serializable-%EC%9D%B4%EC%9A%A9-5fddf7e3c730
                         일단 해당 소스 파일 한번 뜯어보고 고쳐보자
                      */
-
+                    iotAdapter.addItem(newItem);
                 }
                 //수정해지는 부분 로직
                 else {
@@ -175,34 +225,4 @@ public class MainAppActivity extends Activity {
         });
         et_country = view.findViewById(R.id.et_country);
     }
-
 }
-
-
-
-/*
-  private void initDialog() {
-        alertDialog = new AlertDialog.Builder(this);
-        view = getLayoutInflater().inflate(R.layout.dialog_layout, null);
-        alertDialog.setView(view);
-        alertDialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (add)
-                {
-                    add = false;
-                    iotAdapter.addItem(new IoTItem(et_country.getText().toString(), R.mipmap.lightingball_on));
-                    dialog.dismiss();
-                }
-                else
-                {
-                    items.set(edit_position, new IoTItem(et_country.getText().toString(), R.mipmap.lightingball_on));
-                    iotAdapter.notifyDataSetChanged();
-                    dialog.dismiss();
-                }
-            }
-        });
-        et_country = (EditText) view.findViewById(R.id.et_country);
-    }
-}
- */
