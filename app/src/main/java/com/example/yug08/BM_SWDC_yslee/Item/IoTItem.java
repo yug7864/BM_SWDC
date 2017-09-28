@@ -6,7 +6,6 @@ import com.example.yug08.BM_SWDC_yslee.R;
 
 public class IoTItem {
 
-    int debug;
     private int ONImagResid;        // on off 값은 내부에서만 접근 가능
     private int OffImagResid;
     private boolean on_off = true;
@@ -14,18 +13,9 @@ public class IoTItem {
     private Type type = Type.Bulb;
     private int imag_resId;
 
-    IoTItem() {}
-
     public IoTItem(String Name, int resid) {
         this.Nmae = Name;
         this.imag_resId = resid;
-        initImgres();
-    }
-
-    public IoTItem(String Name, int resid, int debug) {
-        this.Nmae = Name;
-        this.imag_resId = resid;
-        this.debug = debug;
         initImgres();
     }
 
@@ -48,15 +38,6 @@ public class IoTItem {
     }
 
     /*
-        클릭하면 이미지 상태 변경 된다.
-     */
-    void iotclick() {
-        on_off = !on_off;
-
-        chengeImag();
-    }
-
-    /*
         센서 상태 ON,OF 에 따른 이미지상태 (즉 DB 값에 따라 보여지는 이미지를 바꿔준다)
     */
     public void chengeImag() {
@@ -73,9 +54,7 @@ public class IoTItem {
         return on_off;
     }
 
-    public void setOnOff(boolean on_off) {
-        this.on_off = on_off;
-    }
+    public void setOnOff(boolean on_off) {this.on_off = on_off;}
 
     public int getImag_resId() {
         return imag_resId;
@@ -89,9 +68,7 @@ public class IoTItem {
         return Nmae;
     }
 
-    public void setNmae(String Name) {
-        this.Nmae = Name;
-    }
+    public void setNmae(String Name) {this.Nmae = Name;}
 
     public void setState(boolean on_off) {
         this.on_off = on_off;

@@ -1,7 +1,9 @@
 package com.example.yug08.BM_SWDC_yslee.Item;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,17 +39,25 @@ public class IotAdapter extends RecyclerView.Adapter<IotAdapter.IoTViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(IoTViewHolder holder, final int position) {
-        final IoTItem item = items.get(position);
+    public void onBindViewHolder(IoTViewHolder holder, int position) {
+
+
+        final int posi = position;
+        final IoTItem item = items.get(posi);
+
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (item.getOnOff())
-                    item.setOnOff(false);
-                else
-                    item.setOnOff(true);
+                clickEvent(item);
+                notifyItemChanged(posi);
+            }
+        });
 
-                notifyItemChanged(position);
+        holder.textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickEvent(item);
+                notifyItemChanged(posi);
             }
         });
 
@@ -65,11 +75,14 @@ public class IotAdapter extends RecyclerView.Adapter<IotAdapter.IoTViewHolder> {
         if (fromPosition < 0 || fromPosition >= items.size() || toPosition < 0 || toPosition >= items.size()) {
             return false;
         }
+
         IoTItem fromItem = items.get(fromPosition);
         items.remove(fromPosition);
         items.add(toPosition, fromItem);
 
+        // 오류가 있음 원인 분석 필요함 ...
         notifyItemMoved(fromPosition, toPosition);
+        notifyDataSetChanged();
         return true;
     }
 
@@ -84,6 +97,12 @@ public class IotAdapter extends RecyclerView.Adapter<IotAdapter.IoTViewHolder> {
         notifyItemRangeChanged(position, items.size());
     }
 
+    public void clickEvent(IoTItem item){
+        if (item.getOnOff())
+            item.setOnOff(false);
+        else
+            item.setOnOff(true);
+    }
     /*
         @ 아마 여기다가 갱신 루틴을 만들어야 할거같음..
         추석안에 프로토 타입 만들어두자 ...
@@ -94,7 +113,7 @@ public class IotAdapter extends RecyclerView.Adapter<IotAdapter.IoTViewHolder> {
      * 새로운것을 보여주고 싶다면 해당 뷰를 XML에 추가후
      * 해당 클래스에 정의 해야한다.
      */
-    public class IoTViewHolder extends ViewHolder {
+    public class IoTViewHolder extends ViewHolder{
         public ImageView imageView;
         public TextView textView;
 

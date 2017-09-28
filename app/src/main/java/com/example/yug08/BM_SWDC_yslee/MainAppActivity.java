@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.yug08.BM_SWDC_yslee.Item.*;
 
@@ -28,9 +29,9 @@ import java.util.ArrayList;
  * Created by yug08 on 2017-09-04.
  * 메인엡 엑비티비 클레스  실재 앱 컨트롤 클레스
  *
- * @17-09-21_YSLEE 최초 GIT 추가
- * @17-09-27_YSLEE ID를 키값으로 상태저장 추가
- * @17-09-29_YSLEE Item 드래그 이동 구현 -> 꼭 필요 있을지 없을지 모르지만일단 있으면 좋지 않을까?
+ * $17-09-21_YSLEE 최초 GIT 추가
+ * $17-09-27_YSLEE ID를 키값으로 상태저장 추가
+ * $17-09-29_YSLEE Item 드래그 이동 구현 -> 꼭 필요 있을지 없을지 모르지만일단 있으면 좋지 않을까?
  */
 public class MainAppActivity extends Activity {
     private static final String TAG = "MainAppActivity"; // 디버깅용 Class name
