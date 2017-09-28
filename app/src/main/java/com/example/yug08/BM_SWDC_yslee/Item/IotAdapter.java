@@ -13,13 +13,21 @@ import com.example.yug08.BM_SWDC_yslee.R;
 import java.util.ArrayList;
 
 
+/**
+ * Created by yug08 on  2017-09-11
+ * LEE YS
+ * macOS 10.12.6
+ *
+ * @17-09-21_YSLEE 최초 GIT 추가
+ *
+ *
+ */
 public class IotAdapter extends RecyclerView.Adapter<IotAdapter.IoTViewHolder> {
     private ArrayList<IoTItem> items;
 
     public IotAdapter(ArrayList<IoTItem> items) {
         this.items = items;
     }
-
 
     @Override
     public IoTViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -53,6 +61,18 @@ public class IotAdapter extends RecyclerView.Adapter<IotAdapter.IoTViewHolder> {
         return items.size();
     }
 
+    public boolean itemMove(int fromPosition, int toPosition) {
+        if (fromPosition < 0 || fromPosition >= items.size() || toPosition < 0 || toPosition >= items.size()) {
+            return false;
+        }
+        IoTItem fromItem = items.get(fromPosition);
+        items.remove(fromPosition);
+        items.add(toPosition, fromItem);
+
+        notifyItemMoved(fromPosition, toPosition);
+        return true;
+    }
+
     public void addItem(IoTItem item) {
         items.add(item);
         notifyItemInserted(items.size());
@@ -65,7 +85,14 @@ public class IotAdapter extends RecyclerView.Adapter<IotAdapter.IoTViewHolder> {
     }
 
     /*
-        IoT 센서 정보를 화면에 보여주는 view홀더 새로운 정보를 보여주고 싶다면 이 클레스를 수정해야된다.
+        @ 아마 여기다가 갱신 루틴을 만들어야 할거같음..
+        추석안에 프로토 타입 만들어두자 ...
+     */
+
+    /**
+     * 아이템의 View(보여지는 컴포넌트?들) 을 정의 하는 클래스
+     * 새로운것을 보여주고 싶다면 해당 뷰를 XML에 추가후
+     * 해당 클래스에 정의 해야한다.
      */
     public class IoTViewHolder extends ViewHolder {
         public ImageView imageView;

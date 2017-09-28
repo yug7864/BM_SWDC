@@ -1,11 +1,4 @@
-/**
- * Created by yug08 on 2017-09-04.
- * 메인엡 엑비티비 클레스  실재 앱 컨트롤 클레스
- *
- * @17-09-21 최초 GIT 추가
- * @17-09-27 ID를 키값으로 상태저장 추가
- *
- */
+
 package com.example.yug08.BM_SWDC_yslee;
 
 import android.app.Activity;
@@ -26,14 +19,23 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+
 import com.example.yug08.BM_SWDC_yslee.Item.*;
+
 import java.util.ArrayList;
 
-
+/**
+ * Created by yug08 on 2017-09-04.
+ * 메인엡 엑비티비 클레스  실재 앱 컨트롤 클레스
+ *
+ * @17-09-21_YSLEE 최초 GIT 추가
+ * @17-09-27_YSLEE ID를 키값으로 상태저장 추가
+ * @17-09-29_YSLEE Item 드래그 이동 구현 -> 꼭 필요 있을지 없을지 모르지만일단 있으면 좋지 않을까?
+ */
 public class MainAppActivity extends Activity {
     private static final String TAG = "MainAppActivity"; // 디버깅용 Class name
     private String ID;
-    IotAdapter iotAdapter;
+    private IotAdapter iotAdapter;
     private FloatingActionButton Fbtn;
     private RecyclerView recyclerView;
     private ArrayList<IoTItem> items;
@@ -46,34 +48,27 @@ public class MainAppActivity extends Activity {
     private SwipeRefreshLayout swipeRefreshLayout;
     private SharedPreference sharedPreference;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /* 엑티비티 레이아웃 설정 */
         setContentView(R.layout.activity_main);
 
-        Intent intent = getIntent();
-        ID = intent.getStringExtra("id");
-        /*
-            액티비티에서 보여주는 뷰 초기화
-            플로팅 버튼 , 리싸이클러뷰 , 리싸이클러뷰 스와이프 기능 까지 전부 정의
-        */
         initViews();
-        /*
-            새로운 아이템 생성 , 수정시 이동되는 액비비티 , 팝업창을 정의하고 초기화
-         */
         initDialog();
 
     }
 
     /* View , 변수 초기화 함수 */
     private void initViews() {
+        /*ID 넘겨 받기*/
+        Intent intent = getIntent();
+        ID = intent.getStringExtra("id");
+
         Fbtn = findViewById(R.id.floatingActionButton);
         sharedPreference = new SharedPreference(ID);
-        items = sharedPreference.getItems(this, items);
 
-        if ((items) == null) {
+        if ((items = sharedPreference.getItems(this, items)) == null) {
             items = new ArrayList<>();
         }
 
@@ -133,13 +128,15 @@ public class MainAppActivity extends Activity {
     /*리사이클러뷰 스와이프 관련 기능 초기화 이벤트 에니메이션 정의*/
     private void initSwipe() {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback
-                = new ItemTouchHelper.SimpleCallback(0,
+                = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
             @Override
             public boolean onMove(RecyclerView recyclerView,
                                   RecyclerView.ViewHolder viewHolder,
-                                  RecyclerView.ViewHolder target) {return false;}
+                                  RecyclerView.ViewHolder target) {
+                return iotAdapter.itemMove(viewHolder.getAdapterPosition(),target.getAdapterPosition());
+            }
 
 
             @Override             /* 리싸이클러뷰 스와이프 했을때 기능 왼쪽: 삭제 , 오른쪽 에디트 */
@@ -169,7 +166,7 @@ public class MainAppActivity extends Activity {
 
                     View itemView = viewHolder.itemView;
                     if (dX > 0) {
-                        paint.setColor(Color.parseColor("#999999"));
+                        paint.setColor(Color.parseColor("#a8a8a8a8"));
                         RectF background = new RectF((float) itemView.getLeft(),
                                 (float) itemView.getTop(), dX, (float) itemView.getBottom());
                         c.drawRect(background, paint);
@@ -206,7 +203,6 @@ public class MainAppActivity extends Activity {
                 IoTItem newItem;
                 if (add) {
                     add = false;
-
                     newItem = new IoTItem(et_country.getText().toString(), R.mipmap.lightingball_on);
                     /* @ 구현이 필요합니다.
                         Intent intent = new Intent(MainAppActivity.this, IoTSettingActivity1st.class);

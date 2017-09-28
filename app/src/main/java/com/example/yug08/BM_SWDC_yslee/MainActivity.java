@@ -26,12 +26,16 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-/*
-    2017-09-10
-    LEE YS
-
-    macOS 10.12.6
-    로그인 엑티비티 서버 , id , ps 필요
+/**
+ * Created by yug08 on  2017-09-10
+ * LEE YS
+ * macOS 10.12.6
+ *
+ * @17-09-18_YSLEE 로그인 기능 구현
+ * @17-09-20_YSLEE 로그인 기능 구현(POST)
+ * @17-09-21_YSLEE 최초 GIT 추가
+ * @17-09-27_YSLEE Server, ID, PW 상태 저장 구현
+ * @17-09-28_YSLEE 자동 로그인 구현
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -166,8 +170,8 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "주인님 방갑습니다." +
                                 jsonObject.getString("success"), Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(getApplicationContext(),MainAppActivity.class);
-                        intent.putExtra("id",inputID.getText().toString());     // 로그인시 아이디를 넘겨줍니다.
+                        Intent intent = new Intent(getApplicationContext(), MainAppActivity.class);
+                        intent.putExtra("id", inputID.getText().toString());     // 로그인시 아이디를 넘겨줍니다.
                         startActivity(intent);
                     } else {
                         Toast.makeText(getApplicationContext(),
@@ -196,7 +200,5 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         requestQueue.add(request);
-
-
     }
 }
