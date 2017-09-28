@@ -7,15 +7,14 @@ import com.example.yug08.BM_SWDC_yslee.R;
 public class IoTItem {
 
     int debug;
-    int ONImagResid;
-    int OffImagResid;
+    private int ONImagResid;        // on off 값은 내부에서만 접근 가능
+    private int OffImagResid;
     private boolean on_off = true;
     private String Nmae;
     private Type type = Type.Bulb;
     private int imag_resId;
 
-    IoTItem() {
-    }
+    IoTItem() {}
 
     public IoTItem(String Name, int resid) {
         this.Nmae = Name;
@@ -62,9 +61,9 @@ public class IoTItem {
     */
     public void chengeImag() {
         if (on_off)
-            imag_resId = R.mipmap.lightingball_on;
+            imag_resId = ONImagResid;
         else
-            imag_resId = R.mipmap.lightingball_off;
+            imag_resId = OffImagResid;
     }
 
     /*
@@ -92,10 +91,6 @@ public class IoTItem {
 
     public void setNmae(String Name) {
         this.Nmae = Name;
-    }
-
-    public int getDebug() {
-        return debug;
     }
 
     public void setState(boolean on_off) {

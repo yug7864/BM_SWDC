@@ -32,7 +32,10 @@ dependencies {
     // 로그인 String리퀘스트 클레스를 상속 받기 위한 소스
     compile 'com.mcxiaoke.volley:library:1.0.19'
     // 당겨서 새로고침
-    compile 'com.android.support:support-v4:23.4.0'
+    //noinspection GradleCompatible
+    compile 'com.android.support:support-v4:25.3.1'
+    //GSON
+    compile 'com.google.code.gson:gson:2.8.1'
     testCompile 'junit:junit:4.12'
 
 
