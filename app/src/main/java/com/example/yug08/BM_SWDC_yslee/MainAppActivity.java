@@ -19,9 +19,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.example.yug08.BM_SWDC_yslee.Item.*;
+import com.example.yug08.BM_SWDC_yslee.Item.IoTItem;
+import com.example.yug08.BM_SWDC_yslee.Item.IotAdapter;
 
 import java.util.ArrayList;
 
@@ -35,7 +35,7 @@ import java.util.ArrayList;
  */
 public class MainAppActivity extends Activity {
     private static final String TAG = "MainAppActivity"; // 디버깅용 Class name
-    private String ID;
+    private String ID,ServerURL;
     private IotAdapter iotAdapter;
     private FloatingActionButton Fbtn;
     private RecyclerView recyclerView;
@@ -65,6 +65,7 @@ public class MainAppActivity extends Activity {
         /*ID 넘겨 받기*/
         Intent intent = getIntent();
         ID = intent.getStringExtra("id");
+        ServerURL = intent.getStringExtra("ServerURL");
 
         Fbtn = findViewById(R.id.floatingActionButton);
         sharedPreference = new SharedPreference(ID);
@@ -79,7 +80,8 @@ public class MainAppActivity extends Activity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        iotAdapter = new IotAdapter(items);
+        iotAdapter = new IotAdapter(items,this);
+        iotAdapter.setID(ID); iotAdapter.setServer(ServerURL);
         recyclerView.setAdapter(iotAdapter);
         eventinit();
     }
@@ -109,6 +111,8 @@ public class MainAppActivity extends Activity {
              */
             @Override
             public void onRefresh() {
+                iotAdapter.refresh();
+
                 // false 안해주면 뻉글 뺑글이 계속 도니깐 꼮 false
                 swipeRefreshLayout.setRefreshing(false);
             }

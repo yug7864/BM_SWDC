@@ -8,10 +8,11 @@ public class IoTItem {
 
     private int ONImagResid;        // on off 값은 내부에서만 접근 가능
     private int OffImagResid;
-    private boolean on_off = true;
+    private boolean currentStatus = true;
     private String Nmae;
     private Type type = Type.Bulb;
     private int imag_resId;
+    private int port;
 
     public IoTItem(String Name, int resid) {
         this.Nmae = Name;
@@ -41,7 +42,7 @@ public class IoTItem {
         센서 상태 ON,OF 에 따른 이미지상태 (즉 DB 값에 따라 보여지는 이미지를 바꿔준다)
     */
     public void chengeImag() {
-        if (on_off)
+        if (currentStatus)
             imag_resId = ONImagResid;
         else
             imag_resId = OffImagResid;
@@ -50,11 +51,11 @@ public class IoTItem {
     /*
         이후 메서드는 값을 읽고 쓰고 위함 , 정보은닉
      */
-    public boolean getOnOff() {
-        return on_off;
+    public boolean getCurrentStatus() {
+        return currentStatus;
     }
 
-    public void setOnOff(boolean on_off) {this.on_off = on_off;}
+    public void setCurrentStatus(boolean on_off) {this.currentStatus = on_off;}
 
     public int getImag_resId() {
         return imag_resId;
@@ -70,10 +71,6 @@ public class IoTItem {
 
     public void setNmae(String Name) {this.Nmae = Name;}
 
-    public void setState(boolean on_off) {
-        this.on_off = on_off;
-    }
-
     public Type getType() {
         return this.type;
     }
@@ -81,4 +78,8 @@ public class IoTItem {
     public void setType(Type type) {
         this.type = type;
     }
+
+    public void setPort(int portnum){this.port = portnum;}
+
+    public int getPort(){return port;}
 }
