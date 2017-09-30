@@ -117,14 +117,14 @@ public class IotAdapter extends RecyclerView.Adapter<IotAdapter.IoTViewHolder> {
         notifyItemRangeChanged(position, items.size());
     }
 
-    public void clickEvent(IoTItem item) {
-        if (item.getCurrentStatus())
-            item.setCurrentStatus(false);
-        else
-            item.setCurrentStatus(true);
-    }
-
     /**
+     * public void clickEvent(IoTItem item) {
+     if (item.getCurrentStatus())
+     item.setCurrentStatus(false);
+     else
+     item.setCurrentStatus(true);
+     }
+     *
      * @ 아마 여기다가 갱신 루틴을 만들어야 할거같음..
      * 추석안에 프로토 타입 만들어두자 ...
      */
@@ -141,9 +141,7 @@ public class IotAdapter extends RecyclerView.Adapter<IotAdapter.IoTViewHolder> {
 
         request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
-            public void onResponse(String response) {
-
-            }
+            public void onResponse(String response) {}
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -204,8 +202,6 @@ public class IotAdapter extends RecyclerView.Adapter<IotAdapter.IoTViewHolder> {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -226,16 +222,11 @@ public class IotAdapter extends RecyclerView.Adapter<IotAdapter.IoTViewHolder> {
                 }
             };
             requestQueue.add(request);
-
         }
-
-        Log.e("END", "END");
 
         for (int i = 0; i < items.size(); i++) {
             notifyItemChanged(i);
         }
-
-
     }
 
     /*불리언 값을 0 과 1 로 */
