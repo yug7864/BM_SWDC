@@ -5,9 +5,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@drawable/bmicon"
+        android:label="HomeIoTApp"
+        android:roundIcon="@drawable/rbmicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="com.example.yug08.BM_SWDC_yslee.MainActivity">
@@ -17,7 +17,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name="com.example.yug08.BM_SWDC_yslee.MainAppActivity" />
+
+        <activity android:name=".IoTSetting.IoTSetting"/>
+
+        <service android:name=".DBcontrol.BackgroundService"></service>
+
+
+
     </application>
 
 </manifest>

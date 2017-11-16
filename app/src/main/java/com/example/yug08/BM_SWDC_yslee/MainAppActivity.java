@@ -15,36 +15,46 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.yug08.BM_SWDC_yslee.DBcontrol.BackgroundService;
+import com.example.yug08.BM_SWDC_yslee.DBcontrol.VolleyRequestInstance;
+import com.example.yug08.BM_SWDC_yslee.IoTSetting.IoTSetting;
+import com.example.yug08.BM_SWDC_yslee.IoTUtil.IoTUtil;
 import com.example.yug08.BM_SWDC_yslee.Item.IoTItem;
 import com.example.yug08.BM_SWDC_yslee.Item.IotAdapter;
+import com.example.yug08.BM_SWDC_yslee.Item.SingletonList;
 
 import java.util.ArrayList;
+
 
 /**
  * Created by yug08 on 2017-09-04.
  * 메인엡 엑비티비 클레스  실재 앱 컨트롤 클레스
- *
+ * <p>
  * $17-09-21_YSLEE 최초 GIT 추가
  * $17-09-27_YSLEE ID를 키값으로 상태저장 추가
  * $17-09-29_YSLEE Item 드래그 이동 구현 -> 꼭 필요 있을지 없을지 모르지만일단 있으면 좋지 않을까?
  */
 public class MainAppActivity extends Activity {
-    private static final String TAG = "MainAppActivity"; // 디버깅용 Class name
-    private String ID,ServerURL;
+
     private IotAdapter iotAdapter;
+    private ArrayList<IoTItem> items;
+
+    private AlertDialog.Builder alertDialog;
+    private boolean add = false;
+    private BackgroundService backgroundService;
+
     private FloatingActionButton Fbtn;
     private RecyclerView recyclerView;
-    private ArrayList<IoTItem> items;
-    private AlertDialog.Builder alertDialog;
     private EditText et_country;
     private int edit_position;
-    private View view;
-    private boolean add = false;
+    private View DialogView;
+
     private Paint paint = new Paint();
     private SwipeRefreshLayout swipeRefreshLayout;
     private SharedPreference sharedPreference;
@@ -52,51 +62,116 @@ public class MainAppActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         /* 엑티비티 레이아웃 설정 */
         setContentView(R.layout.activity_main);
 
+        init();
         initViews();
+        eventinit();
         initDialog();
 
+        iotAdapter.refresh();
+
+        Intent intent = new Intent(
+                getApplicationContext(),
+                BackgroundService.class);
+        startService(intent);
+
+        onRefreshThread((float) 1.5);
     }
 
-    /* View , 변수 초기화 함수 */
-    private void initViews() {
-        /*ID 넘겨 받기*/
-        Intent intent = getIntent();
-        ID = intent.getStringExtra("id");
-        ServerURL = intent.getStringExtra("ServerURL");
+    /**
+     * 화면갱신 주기 성정
+     *
+     * @param time 몇 초로 갱신할 것인지 성정
+     */
+    private void onRefreshThread(final float time) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep((long) (time * 1000));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            iotAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
 
-        Fbtn = findViewById(R.id.floatingActionButton);
-        sharedPreference = new SharedPreference(ID);
+    /**
+     * 필드 초기화
+     */
+    private void init() {
+        VolleyRequestInstance requestInstance =
+                VolleyRequestInstance.getInstance(getApplicationContext());
+
+
+        sharedPreference = new SharedPreference(IoTUtil.getID());
 
         if ((items = sharedPreference.getItems(this, items)) == null) {
-            items = new ArrayList<>();
+            items = new ArrayList<IoTItem>();
         }
 
+        SingletonList singletonList = new SingletonList(items);
+        items = singletonList.getItemsinstance();
+
+        backgroundService = new BackgroundService();
+    }
+
+    /**
+     * 필드에 있는 뷰  초기화
+     */
+    private void initViews() {
+        Fbtn = findViewById(R.id.floatingActionButton);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-
-        iotAdapter = new IotAdapter(items,this);
-        iotAdapter.setID(ID); iotAdapter.setServer(ServerURL);
+        iotAdapter = new IotAdapter(items);
         recyclerView.setAdapter(iotAdapter);
-        eventinit();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IoTItem item = (IoTItem) data.getSerializableExtra("a");
+
+        if (item != null) {
+            iotAdapter.addItem(item);
+        }
+
+    }
+
+    /**
+     * 이벤트 정의
+     */
     private void eventinit() {
         /* 플로팅 액션 버튼 이벤트정의 */
         Fbtn.setOnClickListener(new FloatingActionButton.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "더해저야 하무니다!"); // 디버깅 용이라서 빌드때 사라질듯...
-                removeView();
-                add = true;
-                alertDialog.setTitle("Add item");
-                et_country.setText("");
-                alertDialog.show();
+
+                if (iotAdapter.getItemCount() < 4) {
+                    Intent intent = new Intent(getApplicationContext(), IoTSetting.class);
+                    startActivityForResult(intent, 0);
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "매우 아쉽게도.....\n" +
+                                    "아이템을 추가하실수 없습니다.\n" +
+                                    "아이템은 4개 까지 만들수 있습니다.",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -112,7 +187,6 @@ public class MainAppActivity extends Activity {
             @Override
             public void onRefresh() {
                 iotAdapter.refresh();
-
                 // false 안해주면 뻉글 뺑글이 계속 도니깐 꼮 false
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -130,7 +204,9 @@ public class MainAppActivity extends Activity {
         );
     }
 
-    /*리사이클러뷰 스와이프 관련 기능 초기화 이벤트 에니메이션 정의*/
+    /**
+     * 리사이클러뷰 스와이프 관련 기능 초기화 이벤트 에니메이션 정의
+     */
     private void initSwipe() {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback
                 = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
@@ -140,7 +216,7 @@ public class MainAppActivity extends Activity {
             public boolean onMove(RecyclerView recyclerView,
                                   RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
-                return iotAdapter.itemMove(viewHolder.getAdapterPosition(),target.getAdapterPosition());
+                return iotAdapter.itemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
             }
 
 
@@ -189,36 +265,28 @@ public class MainAppActivity extends Activity {
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    /* 스와이프 기능으로 해당 아이템 지우는 기능 정의 */
+    /**
+     * 스와이프 기능으로 해당 아이템 지우는 기능 정의
+     */
     private void removeView() {
-        if (view.getParent() != null) {
-            ((ViewGroup) view.getParent()).removeView(view);
+        if (DialogView.getParent() != null) {
+            ((ViewGroup) DialogView.getParent()).removeView(DialogView);
         }
     }
 
-    /* 리사이클러뷰 동작에 대한 기능 호출 정의*/
+    /**
+     * 리사이클러뷰 동작에 대한 기능 호출 정의
+     */
     private void initDialog() {
         alertDialog = new AlertDialog.Builder(this);
-        view = getLayoutInflater().inflate(R.layout.dialog_layout, null);
-        alertDialog.setView(view);
+        DialogView = getLayoutInflater().inflate(R.layout.dialog_layout, null);
+        alertDialog.setView(DialogView);
         alertDialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //추가하면 각 아이템 요소가 더해지는 부분
+                //추가하면 각 아이템 요소가 더해지는 부분 /* 현제는 안쓰이는 부분 입니다. */
                 IoTItem newItem;
-                if (add) {
-                    add = false;
-                    newItem = new IoTItem(et_country.getText().toString(), R.mipmap.lightingball_on);
-                    /* @ 구현이 필요합니다.
-                        Intent intent = new Intent(MainAppActivity.this, IoTSettingActivity1st.class);
-                         // 엑티비티간 오브젝트 넘기는 법 찾아야된다 .
-                        https://medium.com/@henen/%EB%B9%A0%EB%A5%B4%EA%B2%8C-%EB%B0%B0%EC%9A%B0%EB%8A%94-%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-intent-4-%EB%82%B4%EA%B0%80-%EB%A7%8C%EB%93%A0-class%EB%A5%BC-%EC%A0%84%EC%86%A1-serializable-%EC%9D%B4%EC%9A%A9-5fddf7e3c730
-                        일단 해당 소스 파일 한번 뜯어보고 고쳐보자
-                     */
-                    iotAdapter.addItem(newItem);
-                }
-                //수정해지는 부분 로직
-                else {
+                if (!add) {
                     newItem = items.get(edit_position);
                     newItem.setNmae(et_country.getText().toString());
                     items.set(edit_position, newItem);
@@ -227,7 +295,7 @@ public class MainAppActivity extends Activity {
                 }
             }
         });
-        et_country = view.findViewById(R.id.et_country);
+        et_country = DialogView.findViewById(R.id.et_country);
     }
 
     @Override
@@ -236,12 +304,3 @@ public class MainAppActivity extends Activity {
         sharedPreference.saveItems(this, items);
     }
 }
-
-/*
-    @구현 완료
-    로그인 할떄 입력한 ID 값을 가지고옴
-    유저 ID로 만든 테이블을 가지고 올떄 사용할예정
-
-
-
- */
