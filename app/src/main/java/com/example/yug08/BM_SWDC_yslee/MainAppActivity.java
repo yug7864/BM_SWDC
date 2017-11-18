@@ -15,10 +15,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.ActionMode;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.yug08.BM_SWDC_yslee.DBcontrol.BackgroundService;
@@ -49,11 +52,13 @@ public class MainAppActivity extends Activity {
     private boolean add = false;
     private BackgroundService backgroundService;
 
+
     private FloatingActionButton Fbtn;
     private RecyclerView recyclerView;
     private EditText et_country;
     private int edit_position;
     private View DialogView;
+    private Switch Switch;
 
     private Paint paint = new Paint();
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -140,6 +145,7 @@ public class MainAppActivity extends Activity {
         recyclerView.setLayoutManager(layoutManager);
         iotAdapter = new IotAdapter(items);
         recyclerView.setAdapter(iotAdapter);
+        Switch = (Switch) findViewById(R.id.swicher);
     }
 
     @Override
@@ -172,6 +178,26 @@ public class MainAppActivity extends Activity {
                                     "아이템은 4개 까지 만들수 있습니다.",
                             Toast.LENGTH_SHORT).show();
                 }
+            }
+
+        });
+
+        Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                IoTUtil.setOutGoingMode(isChecked);
+                String mesage;
+                if(isChecked){
+                    mesage = "외출모드 설정!";
+                }
+                else {
+                    mesage = "외출모드 해제!";
+                }
+
+                Fbtn.setBackgroundColor(Color.GREEN);
+                Toast.makeText(getApplicationContext(),
+                        mesage,
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -299,8 +325,26 @@ public class MainAppActivity extends Activity {
     }
 
     @Override
+    public void onBackPressed() {
+
+        Intent intent = new Intent(
+                getApplicationContext(),
+                BackgroundService.class);
+        stopService(intent);
+
+        super.onBackPressed();
+    }
+
+    @Override
     protected void onStop() {
-        super.onStop();
         sharedPreference.saveItems(this, items);
+
+        super.onStop();
+
+    }
+
+    @Override
+    public void onActionModeFinished(ActionMode mode) {
+        super.onActionModeFinished(mode);
     }
 }
