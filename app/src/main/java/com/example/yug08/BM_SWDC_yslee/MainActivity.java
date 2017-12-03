@@ -1,6 +1,7 @@
 package com.example.yug08.BM_SWDC_yslee;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +11,21 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.example.yug08.BM_SWDC_yslee.DBcontrol.Login;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.yug08.BM_SWDC_yslee.IoTUtil.IoTUtil;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by yug08 on  2017-09-10
@@ -32,9 +45,12 @@ public class MainActivity extends AppCompatActivity {
      * 만약 만드시는 서버의 로그인 PHP 스크립트의 경로가
      * 다르다면 밑에 있는 경로를 바꿔야함.
      */
+    private static String path = "/BM/user_control.php/";
+
     private Button BtnLogin;
     private CheckBox loginDataSave;
     private EditText inputID, inputServer, inputPW;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,18 +165,56 @@ public class MainActivity extends AppCompatActivity {
      * @ 1차 모듈화 리팩토링 완료
      * @ Login Class 로 모듈화
      */
-    private void login() {
-        final Login login = new Login();
-
+    private  void login() {
         String IP = inputServer.getText().toString();
-        String ID = inputID.getText().toString();
-        String PW = inputPW.getText().toString();
+        final String ID = inputID.getText().toString();
+        final String PW = inputPW.getText().toString();
+        final String URL = "http://" + IP + path;
 
         IoTUtil.setIP(IP);
         IoTUtil.setID(ID);
 
-        login.setParameta(ID, PW);
-        login.login(getApplicationContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        StringRequest request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {                               // json 받아서 파싱
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    if (jsonObject.names().get(0).equals("success")) {
+                        Toast.makeText(getApplicationContext(),
+                                jsonObject.getString("success"), Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(getApplicationContext(), MainAppActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(),
+                                "아이디 또는 패스워드가 틀렸습니다.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),
+                        "서버상태 혹은 서버주소를 확인하세요.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // POST 형식으로 넘겨줄 인자 맵
+                HashMap<String, String> parameta = new HashMap<String, String>();
+                parameta.put("userID", ID);
+                parameta.put("userPW", PW);
+                return parameta;
+            }
+        };
+        requestQueue.add(request);
     }
 
     /**
