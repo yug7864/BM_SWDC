@@ -76,7 +76,6 @@ public class ServiceThread extends Thread {
             refresh_item.refresh(items);
             chvallu();
         }
-
     }
 
     /**

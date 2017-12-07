@@ -1,0 +1,703 @@
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision f35747a5d556ba51ec8934ace59db6c4a3eab5ef)
++++ app/build.gradle	(revision 41e922b4c3dc81a492c2f38e613c31c4563cc785)
+@@ -4,7 +4,7 @@
+     compileSdkVersion 26
+     buildToolsVersion "26.0.1"
+     defaultConfig {
+-        applicationId "com.example.yug08.bmapp"
++        applicationId "com.example.yug08.BM_SWDC_yslee"
+         minSdkVersion 22
+         targetSdkVersion 26
+         versionCode 1
+@@ -30,8 +30,7 @@
+     compile 'com.android.support:design:26.0.0-alpha1'
+     compile 'com.baoyz.swipemenulistview:library:1.3.0'
+     // 로그인 String리퀘스트 클레스를 상속 받기 위한 소스
+-    compile 'com.android.volley:volley:1.0.0'
+-
++    compile 'com.mcxiaoke.volley:library:1.0.19'
+ 
+     testCompile 'junit:junit:4.12'
+ 
+Index: app/src/main/res/layout/loginactivity.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/loginactivity.xml	(revision f35747a5d556ba51ec8934ace59db6c4a3eab5ef)
++++ app/src/main/res/layout/loginactivity.xml	(revision bb1611eb5b980382365561563fad2f63cb5ed78b)
+@@ -28,7 +28,7 @@
+             android:textSize="18sp"
+             android:layout_below="@+id/serverInput"
+             android:layout_centerHorizontal="true"
+-            android:hint="Email"
++            android:hint="ID"
+             android:singleLine="true" />
+ 
+         <EditText
+@@ -51,7 +51,7 @@
+             android:layout_marginTop="20dp"
+             android:background="#EDBB09"
+             android:text="Login"
+-            android:textAllCaps="false" />
++             />
+ 
+         <CheckBox
+             android:id="@+id/RememberCheck"
+\ No newline at end of file
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision 9a9ad6324d048ac1e15aefe8803428e71b327d22)
++++ app/src/main/AndroidManifest.xml	(revision 41e922b4c3dc81a492c2f38e613c31c4563cc785)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+-    package="com.example.yug08.bmapp">
++    package="com.example.yug08.BM_SWDC_yslee">
+     <uses-permission android:name="android.permission.INTERNET" />
+ 
+     <application
+@@ -10,14 +10,14 @@
+         android:roundIcon="@mipmap/ic_launcher_round"
+         android:supportsRtl="true"
+         android:theme="@style/AppTheme">
+-        <activity android:name=".MainActivity">
++        <activity android:name="com.example.yug08.BM_SWDC_yslee.MainActivity">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+ 
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+         </activity>
+-        <activity android:name=".MainAppActivity" />
++        <activity android:name="com.example.yug08.BM_SWDC_yslee.MainAppActivity" />
+     </application>
+ 
+ </manifest>
+\ No newline at end of file
+Index: app/src/main/java/com/example/yug08/bmapp/IoTSetting/IoTSettingActivity1st.java
+===================================================================
+--- app/src/main/java/com/example/yug08/bmapp/IoTSetting/IoTSettingActivity1st.java	(revision 9a9ad6324d048ac1e15aefe8803428e71b327d22)
++++ app/src/main/java/com/example/yug08/BM_SWDC_yslee/IoTSetting/IoTSettingActivity1st.java	(revision 41e922b4c3dc81a492c2f38e613c31c4563cc785)
+@@ -7,8 +7,8 @@
+ //import android.view.View;
+ //import android.widget.ImageButton;
+ //
+-//import com.example.yug08.bmapp.Item.IoTItem;
+-//import com.example.yug08.bmapp.Item.Type;
++//import IoTItem;
++//import Type;
+ //import com.example.yug08.bmapp.R;
+ //
+ //
+Index: app/src/main/java/com/example/yug08/bmapp/Item/IoTItem.java
+===================================================================
+--- app/src/main/java/com/example/yug08/bmapp/Item/IoTItem.java	(revision 9a9ad6324d048ac1e15aefe8803428e71b327d22)
++++ app/src/main/java/com/example/yug08/BM_SWDC_yslee/Item/IoTItem.java	(revision 41e922b4c3dc81a492c2f38e613c31c4563cc785)
+@@ -1,21 +1,18 @@
+-package com.example.yug08.bmapp.Item;
++package com.example.yug08.BM_SWDC_yslee.Item;
+ 
+-import android.os.Parcelable;
+-import android.widget.ImageButton;
++import com.example.yug08.BM_SWDC_yslee.R;
+ 
+-import com.example.yug08.bmapp.R;
+-
+ // 리스트에 추가할 아이템 여기서 아이템은 센서당!
+ 
+ public class IoTItem {
+ 
+     int debug;
++    int ONImagResid;
++    int OffImagResid;
+     private boolean on_off = true;
+     private String Nmae;
+     private Type type = Type.Bulb;
+     private int imag_resId;
+-    int ONImagResid;
+-    int OffImagResid;
+ 
+     IoTItem() {
+     }
+@@ -55,10 +52,7 @@
+         클릭하면 이미지 상태 변경 된다.
+      */
+     void iotclick() {
+-        if (on_off)
+-            on_off = false;
+-        else
+-            on_off = true;
++        on_off = !on_off;
+ 
+         chengeImag();
+     }
+@@ -96,23 +90,23 @@
+         return Nmae;
+     }
+ 
+-    public int getDebug() {
+-        return debug;
+-    }
+-
+     public void setNmae(String Name) {
+         this.Nmae = Name;
+     }
+ 
++    public int getDebug() {
++        return debug;
++    }
++
+     public void setState(boolean on_off) {
+         this.on_off = on_off;
+     }
+ 
+-    public void setType(Type type) {
+-        this.type = type;
+-    }
+-
+     public Type getType() {
+         return this.type;
++    }
++
++    public void setType(Type type) {
++        this.type = type;
+     }
+ }
+Index: app/src/main/java/com/example/yug08/bmapp/Item/IotAdapter.java
+===================================================================
+--- app/src/main/java/com/example/yug08/bmapp/Item/IotAdapter.java	(revision 9a9ad6324d048ac1e15aefe8803428e71b327d22)
++++ app/src/main/java/com/example/yug08/BM_SWDC_yslee/Item/IotAdapter.java	(revision 41e922b4c3dc81a492c2f38e613c31c4563cc785)
+@@ -1,43 +1,40 @@
+-package com.example.yug08.bmapp.Item;
++package com.example.yug08.BM_SWDC_yslee.Item;
+ 
+ import android.support.v7.widget.RecyclerView;
+-
+-import java.util.ArrayList;
+-
+ import android.support.v7.widget.RecyclerView.ViewHolder;
+ import android.view.LayoutInflater;
+ import android.view.View;
+-
+ import android.view.ViewGroup;
+ import android.widget.ImageView;
+ import android.widget.TextView;
+ 
+-import com.example.yug08.bmapp.R;
++import com.example.yug08.BM_SWDC_yslee.R;
+ 
++import java.util.ArrayList;
+ 
++
+ public class IotAdapter extends RecyclerView.Adapter<IotAdapter.IoTViewHolder> {
+-    private  ArrayList<IoTItem> items;
++    private ArrayList<IoTItem> items;
+ 
+-    public IotAdapter(ArrayList<IoTItem> items)
+-    {
++    public IotAdapter(ArrayList<IoTItem> items) {
+         this.items = items;
+     }
+ 
+ 
+     @Override
+     public IoTViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.iotitem,parent,false);
++        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.iotitem, parent, false);
+         IoTViewHolder holder = new IoTViewHolder(view);
+         return holder;
+     }
+ 
+     @Override
+-    public void onBindViewHolder(IoTViewHolder holder,final int position) {
++    public void onBindViewHolder(IoTViewHolder holder, final int position) {
+         final IoTItem item = items.get(position);
+-        holder.imageView.setOnClickListener(new View.OnClickListener(){
++        holder.imageView.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+-                if(item.getOnOff())
++                if (item.getOnOff())
+                     item.setOnOff(false);
+                 else
+                     item.setOnOff(true);
+@@ -56,28 +53,28 @@
+         return items.size();
+     }
+ 
+-    public void addItem(IoTItem item){
++    public void addItem(IoTItem item) {
+         items.add(item);
+         notifyItemInserted(items.size());
+     }
+ 
+-    public  void removeItem(int position){
++    public void removeItem(int position) {
+         items.remove(position);
+         notifyItemRemoved(position);
+-        notifyItemRangeChanged(position,items.size());
++        notifyItemRangeChanged(position, items.size());
+     }
+ 
+     /*
+         IoT 센서 정보를 화면에 보여주는 view홀더 새로운 정보를 보여주고 싶다면 이 클레스를 수정해야된다.
+      */
+     public class IoTViewHolder extends ViewHolder {
+-        public ImageView imageView ;
++        public ImageView imageView;
+-        public TextView textView ;
++        public TextView textView;
+ 
+         public IoTViewHolder(View itemView) {
+             super(itemView);
+-            imageView = (ImageView) itemView.findViewById(R.id.imageView);
+-            textView  = (TextView) itemView.findViewById(R.id.itemName);
++            imageView = itemView.findViewById(R.id.imageView);
++            textView = itemView.findViewById(R.id.itemName);
+         }
+     }
+ }
+Index: app/src/main/java/com/example/yug08/bmapp/Item/Type.java
+===================================================================
+--- app/src/main/java/com/example/yug08/bmapp/Item/Type.java	(revision 9a9ad6324d048ac1e15aefe8803428e71b327d22)
++++ app/src/main/java/com/example/yug08/BM_SWDC_yslee/Item/Type.java	(revision 41e922b4c3dc81a492c2f38e613c31c4563cc785)
+@@ -1,4 +1,4 @@
+-package com.example.yug08.bmapp.Item;
++package com.example.yug08.BM_SWDC_yslee.Item;
+ 
+ /**
+  * Created by yug08 on 2017-09-20.
+@@ -9,5 +9,5 @@
+ 
+  */
+ public enum Type {
+-    Bulb ,   Win
++    Bulb, Win
+ }
+Index: app/src/main/java/com/example/yug08/bmapp/MainActivity.java
+===================================================================
+--- app/src/main/java/com/example/yug08/bmapp/MainActivity.java	(revision f35747a5d556ba51ec8934ace59db6c4a3eab5ef)
++++ app/src/main/java/com/example/yug08/BM_SWDC_yslee/MainActivity.java	(revision 41e922b4c3dc81a492c2f38e613c31c4563cc785)
+@@ -1,105 +1,120 @@
+-package com.example.yug08.bmapp;
++package com.example.yug08.BM_SWDC_yslee;
+ 
+ import android.content.Intent;
++import android.os.Bundle;
+ import android.support.v7.app.AlertDialog;
+ import android.support.v7.app.AppCompatActivity;
+-import android.os.Bundle;
++import android.util.Log;
+ import android.view.View;
+ import android.widget.Button;
+ import android.widget.EditText;
++import android.widget.Toast;
+ 
++import com.android.volley.AuthFailureError;
++import com.android.volley.Request;
+ import com.android.volley.RequestQueue;
+ import com.android.volley.Response;
++import com.android.volley.VolleyError;
++import com.android.volley.toolbox.StringRequest;
+ import com.android.volley.toolbox.Volley;
+ 
++import org.json.JSONException;
+ import org.json.JSONObject;
+ 
++import java.util.HashMap;
++import java.util.Map;
++
+ /*
+     로그인 엑티비티 서버 , id , ps 필요
+  */
+ public class MainActivity extends AppCompatActivity {
+ 
++    public static String Login = "/webapp/user_control.php/";
++    public String URL = "http://118.39.231.49:8080/webapp/user_control.php";
+     private Button BtnLogin;
+     private EditText inputID, inputServer, inputPS;
+     private AlertDialog dialog;
++    private RequestQueue requestQueue;
++    private StringRequest request;
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.loginactivity);
+         /*
++        /*
+             로그인 버튼 로그인 되면 메인앱 화면으로 전환시켜줌
+             # [ID, 서버 , 비번 , DB 값] 인텐트로 넘겨야됨 구현 필요 우선도 낮음
+          */
++        initview();
+     }
+ 
+     void initview() {
++        inputServer = (EditText) findViewById(R.id.serverInput);
+         inputID = (EditText) findViewById(R.id.emailInput);
+-        inputServer = (EditText) findViewById(R.id.passwordInput);
+-        inputPS = (EditText) findViewById(R.id.serverInput);
++        inputPS = (EditText) findViewById(R.id.passwordInput);
+         BtnLogin = (Button) findViewById(R.id.LoginButton);
+-
++        requestQueue = Volley.newRequestQueue(this);
+         /*
+             로그인 버튼 이벤트 정의
+          */
+         BtnLogin.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+-                String Server = inputServer.getText().toString();
+-                String userID = inputID.getText().toString();
+-                String userPW = inputPS.getText().toString();
++                URL = "http://" + inputServer.getText().toString() + Login;
++                final String userID = inputID.getText().toString();
++                final String userPW = inputPS.getText().toString();
++                Log.e("asd", "로그인!!!!!");
+ 
+-                Response.Listener<String> respons = new Response.Listener<String>() {
+-
++                request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                     @Override
++                    // 로그인에 성공한다면
+                     public void onResponse(String response) {
+                         try {
++                            // json 받아서 파싱
+                             JSONObject jsonObject = new JSONObject(response);
+-                            boolean success = jsonObject.getBoolean("success");
+-                            /*
+-                                로그인 성공시 현 액티비티를 멈추고 메인 엑티비티로 전환
+-                                 아직 값을 넘기는걸 구현하지 않음...
+-                                 조만간 테이블 나오는거보고 어떻게  갱신을 구현할지
+-                                 고민해봅시다...
+-                             */
+-                            if (success) {
+-                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+-                                dialog = builder.setMessage("주인님 환영합니다!").setPositiveButton("확인", null).create();
+-                                dialog.show();
+-                                Intent intent = new Intent(MainActivity.this, MainAppActivity.class);
+-                                startActivity(intent);
+-                                finish();
+-                            } else {
+-                                //실패하면 그냥 실패
+-                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+-                                dialog = builder.setMessage("계정이 없습니다.").setPositiveButton("확인", null).create();
+-                                dialog.show();
++
++                            // success json 존제 하면 참이겠지?
++                            if (jsonObject.names().get(0).equals("success")) {
++                                Toast.makeText(getApplicationContext(), "주인님 방갑습니다." + jsonObject.getString("success"), Toast.LENGTH_SHORT).show();
++
++                                // 매인 앱 액티비티로 이동
++                                startActivity(new Intent(getApplicationContext(), MainAppActivity.class));
+                             }
+-                        } catch (Exception e) {
++                            // 실패시 json 에러 값 출력;
++                            else {
++                                Toast.makeText(getApplicationContext(), jsonObject.getString("error"), Toast.LENGTH_SHORT).show();
++                            }
++                        } catch (JSONException e) {
+                             e.printStackTrace();
+                         }
+                     }
++                }, new Response.ErrorListener() {
++                    @Override
++                    public void onErrorResponse(VolleyError error) {
++                    }
++                }) {
++                    @Override
++                    protected Map<String, String> getParams() throws AuthFailureError {
++                        // POST 형식으로 넘겨줄 인자 맵
++                        HashMap<String, String> parameta = new HashMap<String, String>();
++                        parameta.put("userID", userID);
++                        parameta.put("userPW", userPW);
++                        return parameta;
++                    }
+                 };
+-                LoginRequest loginRequest = new LoginRequest(Server,userID,userPW,respons);
+-                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+-                queue.add(loginRequest);
++                requestQueue.add(request);
+             }
+         });
+     }
+ 
+-    protected void  onStop(){
+-        super.onStop();
+-        if(dialog != null)
+-        {
+-            dialog.dismiss();
+-            dialog = null;
+-        }
+-
+-    }
+-
+     /*
+-        로그인 데이터를 서버에 매칭해서 서버에 등록된 사용자일 경우에만 로그인 허용
+-        # DB의 로그인 테이블 비교하는 소스를 짜야됨 힘들다 ... DB 1도 모른다 ㅠㅠ
+-        @ 17-09-22 구현 1차 완료
++        @ 17-09-19
++        로그인 씨스템 구현 해야됨
++        @ 17-09-22
++        @ 구현 1차 완료 결과 부분적 성공
++        @ ip 번호 입력시 로그인 가능함 , 도메인 입력시 안됨..
++        @ 도메인 서버에서 넘어갈떄 나오는 값이 문제인건지 도메인 넣어다 하면 안됨 ... ㅠㅠㅠ
++        @
+      */
+ }
+Index: app/src/main/java/com/example/yug08/bmapp/MainAppActivity.java
+===================================================================
+--- app/src/main/java/com/example/yug08/bmapp/MainAppActivity.java	(revision 9a9ad6324d048ac1e15aefe8803428e71b327d22)
++++ app/src/main/java/com/example/yug08/BM_SWDC_yslee/MainAppActivity.java	(revision 41e922b4c3dc81a492c2f38e613c31c4563cc785)
+@@ -3,7 +3,7 @@
+  * 메인엡 엑비티비 클레스  실재 앱 컨트롤 클레스
+  */
+ 
+-package com.example.yug08.bmapp;
++package com.example.yug08.BM_SWDC_yslee;
+ 
+ import android.app.Activity;
+ import android.content.DialogInterface;
+@@ -22,16 +22,16 @@
+ import android.view.ViewGroup;
+ import android.widget.EditText;
+ 
+-import com.example.yug08.bmapp.Item.*;
++import com.example.yug08.BM_SWDC_yslee.Item.IoTItem;
++import com.example.yug08.BM_SWDC_yslee.Item.IotAdapter;
+ 
+ import java.util.ArrayList;
+ 
+ 
+ public class MainAppActivity extends Activity {
+     private static final String TAG = "MainAppActivity"; // 디버깅용 Class name
+-
+-    private FloatingActionButton Fbtn;
+     IotAdapter iotAdapter;
++    private FloatingActionButton Fbtn;
+     private RecyclerView recyclerView;
+     private ArrayList<IoTItem> items = new ArrayList<>();
+     private AlertDialog.Builder alertDialog;
+@@ -58,7 +58,7 @@
+     }
+ 
+     private void initViews() {
+-        Fbtn = (FloatingActionButton) findViewById(R.id.floatingActionButton);
++        Fbtn = findViewById(R.id.floatingActionButton);
+         //플로팅 액션 버튼 이벤트정의
+         Fbtn.setOnClickListener(new FloatingActionButton.OnClickListener() {
+             @Override
+@@ -72,7 +72,7 @@
+             }
+         });
+ 
+-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
++        recyclerView = findViewById(R.id.recyclerView);
+         recyclerView.setHasFixedSize(true);
+         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+         recyclerView.setLayoutManager(layoutManager);
+@@ -171,7 +171,7 @@
+                 }
+             }
+         });
+-        et_country = (EditText) view.findViewById(R.id.et_country);
++        et_country = view.findViewById(R.id.et_country);
+     }
+ 
+ }
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_main.xml	(revision 9a9ad6324d048ac1e15aefe8803428e71b327d22)
++++ app/src/main/res/layout/activity_main.xml	(revision 41e922b4c3dc81a492c2f38e613c31c4563cc785)
+@@ -4,7 +4,7 @@
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+-    tools:context="com.example.yug08.bmapp.MainActivity">
++    tools:context="com.example.yug08.BM_SWDC_yslee.MainActivity">
+ 
+     <android.support.design.widget.FloatingActionButton
+         android:id="@+id/floatingActionButton"
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/strings.xml	(revision 9a9ad6324d048ac1e15aefe8803428e71b327d22)
++++ app/src/main/res/values/strings.xml	(revision 41e922b4c3dc81a492c2f38e613c31c4563cc785)
+@@ -1,3 +1,3 @@
+ <resources>
+-    <string name="app_name">BMapp</string>
++    <string name="app_name">BM_SWDC_yslee</string>
+ </resources>
+Index: app/src/main/java/com/example/yug08/bmapp/Dologinbackground.java
+===================================================================
+--- app/src/main/java/com/example/yug08/bmapp/Dologinbackground.java	(revision f35747a5d556ba51ec8934ace59db6c4a3eab5ef)
++++ app/src/main/java/com/example/yug08/bmapp/Dologinbackground.java	(revision f35747a5d556ba51ec8934ace59db6c4a3eab5ef)
+@@ -1,66 +0,0 @@
+-package com.example.yug08.bmapp;
+-
+-import android.os.AsyncTask;
+-import android.util.Log;
+-
+-import java.io.BufferedReader;
+-import java.io.IOException;
+-import java.io.InputStream;
+-import java.io.InputStreamReader;
+-import java.io.OutputStream;
+-import java.net.HttpURLConnection;
+-import java.net.MalformedURLException;
+-import java.net.URL;
+-
+-/**
+- * Created by yug08 on 2017-09-22.
+- */
+-
+-public class registDB extends AsyncTask<Void, Integer, Void> {
+-
+-    @Override
+-    protected Void doInBackground(Void... unused) {
+-
+-        /* 인풋 파라메터값 생성 */
+-
+-        String param = "u_id=" + sId + "&u_pw=" + sPw + "";
+-        try {
+-            /* 서버연결 */
+-            URL url = new URL(
+-                    "http://서버주소/snclib_join.php");
+-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+-            conn.setRequestMethod("POST");
+-            conn.setDoInput(true);
+-            conn.connect();
+-
+-            /* 안드로이드 -> 서버 파라메터값 전달 */
+-            OutputStream outs = conn.getOutputStream();
+-            outs.write(param.getBytes("UTF-8"));
+-            outs.flush();
+-            outs.close();
+-
+-            /* 서버 -> 안드로이드 파라메터값 전달 */
+-            InputStream is = null;
+-            BufferedReader in;
+-            String data = "";
+-
+-            is = conn.getInputStream();
+-            in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+-            String line = null;
+-            StringBuffer buff = new StringBuffer();
+-            while ((line = in.readLine()) != null) {
+-                buff.append(line + "\n");
+-            }
+-            data = buff.toString().trim();
+-            Log.e("RECV DATA", data);
+-
+-        } catch (MalformedURLException e) {
+-            e.printStackTrace();
+-        } catch (IOException e) {
+-            e.printStackTrace();
+-        }
+-
+-        return null;
+-    }
+-}
+Index: app/src/main/java/com/example/yug08/bmapp/LoginRequest.java
+===================================================================
+--- app/src/main/java/com/example/yug08/bmapp/LoginRequest.java	(revision f35747a5d556ba51ec8934ace59db6c4a3eab5ef)
++++ app/src/main/java/com/example/yug08/bmapp/LoginRequest.java	(revision f35747a5d556ba51ec8934ace59db6c4a3eab5ef)
+@@ -1,28 +0,0 @@
+-package com.example.yug08.bmapp;
+-
+-import com.android.volley.AuthFailureError;
+-import com.android.volley.Response;
+-import com.android.volley.toolbox.StringRequest;
+-
+-import java.util.HashMap;
+-import java.util.Map;
+-
+-/**
+- * Created by yug08 on 2017-09-22.
+- */
+-
+-public class LoginRequest extends StringRequest {
+-
+-    static  private String URL = "http://bm.ys2lee.com/webapp/Login.php";
+-    private Map<String ,String> parameta;
+-
+-    public LoginRequest(String server,String userID, String userPW, Response.Listener<String> listener) {
+-        super(Method.POST, URL, listener, null);
+-        URL = server;
+-        parameta = new HashMap<>();
+-        parameta.put("userID", userID);
+-        parameta.put("userPW", userPW);
+-    }
+-    @Override
+-    protected Map<String, String> getParams() {return parameta;}
+-}
+Index: app/src/androidTest/java/com/example/yug08/bmapp/ExampleInstrumentedTest.java
+===================================================================
+--- app/src/androidTest/java/com/example/yug08/bmapp/ExampleInstrumentedTest.java	(revision 9a9ad6324d048ac1e15aefe8803428e71b327d22)
++++ app/src/androidTest/java/com/example/yug08/bmapp/ExampleInstrumentedTest.java	(revision 9a9ad6324d048ac1e15aefe8803428e71b327d22)
+@@ -1,26 +0,0 @@
+-package com.example.yug08.bmapp;
+-
+-import android.content.Context;
+-import android.support.test.InstrumentationRegistry;
+-import android.support.test.runner.AndroidJUnit4;
+-
+-import org.junit.Test;
+-import org.junit.runner.RunWith;
+-
+-import static org.junit.Assert.*;
+-
+-/**
+- * Instrumentation test, which will execute on an Android device.
+- *
+- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+- */
+-@RunWith(AndroidJUnit4.class)
+-public class ExampleInstrumentedTest {
+-    @Test
+-    public void useAppContext() throws Exception {
+-        // Context of the app under test.
+-        Context appContext = InstrumentationRegistry.getTargetContext();
+-
+-        assertEquals("com.example.yug08.bmapp", appContext.getPackageName());
+-    }
+-}
+Index: app/src/test/java/com/example/yug08/bmapp/ExampleUnitTest.java
+===================================================================
+--- app/src/test/java/com/example/yug08/bmapp/ExampleUnitTest.java	(revision 9a9ad6324d048ac1e15aefe8803428e71b327d22)
++++ app/src/test/java/com/example/yug08/bmapp/ExampleUnitTest.java	(revision 9a9ad6324d048ac1e15aefe8803428e71b327d22)
+@@ -1,17 +0,0 @@
+-package com.example.yug08.bmapp;
+-
+-import org.junit.Test;
+-
+-import static org.junit.Assert.*;
+-
+-/**
+- * Example local unit test, which will execute on the development machine (host).
+- *
+- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+- */
+-public class ExampleUnitTest {
+-    @Test
+-    public void addition_isCorrect() throws Exception {
+-        assertEquals(4, 2 + 2);
+-    }
+-}
+\ No newline at end of file
