@@ -31,9 +31,11 @@ public class BulbItem extends IoTItem implements Serializable {
         /**
          *  어뎁터의 값 전송 메서드 모듈화후 넣어야됨
          */
-        currentStatus = !getCurrentStatus();
-        SendSignal sendSignal = new SendSignal();
-        sendSignal.sendRequest(this);
-        chengeImag();
+        synchronized(this) {
+            currentStatus = !getCurrentStatus();
+            SendSignal sendSignal = new SendSignal();
+            sendSignal.sendRequest(this);
+            chengeImag();
+        }
     }
 }

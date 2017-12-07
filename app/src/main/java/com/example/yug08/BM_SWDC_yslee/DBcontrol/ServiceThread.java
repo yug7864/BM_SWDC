@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
+import com.example.yug08.BM_SWDC_yslee.IoTUtil.IoTUtil;
 import com.example.yug08.BM_SWDC_yslee.Item.IoTItem;
 import com.example.yug08.BM_SWDC_yslee.Item.SingletonList;
 
@@ -21,6 +22,7 @@ public class ServiceThread extends Thread {
     private boolean outgoingMode;
     private Refresh_item refresh_item;
     private boolean[] preBuffer;
+    private String masage;
 
     boolean isrun = true;
 
@@ -32,6 +34,7 @@ public class ServiceThread extends Thread {
 
     public ServiceThread(Handler handler , Context context){
         this.handler = handler;
+        masage = "";
 
         items = SingletonList.getItemsinstance();
         preBuffer = new boolean[4];
@@ -46,12 +49,8 @@ public class ServiceThread extends Thread {
         }
     }
 
-    /**
-     * 외출모드 변수를 설정
-     * @param outgoingMode 외부에서 외출모드 지정시 불리언 값으로 지정
-     */
-    public void setOutGoingMode(boolean outgoingMode){
-        this.outgoingMode = outgoingMode;
+    public String getmasage(){
+        return masage;
     }
 
     public void stopThread(){
@@ -60,17 +59,24 @@ public class ServiceThread extends Thread {
         }
     }
 
+    public void stat(){
+        synchronized (this){
+            this.isrun = true;
+        }
+    }
+
     @Override
-    public void run() {
+    public void  run() {
         while(isrun){
             try{
-                Thread.sleep(300); //10초씩 쉰다.
-                Log.d("test", "서비스의 onStartCommand");
-                refresh_item.refresh(items);
-                chvallu();
+                Thread.sleep(500); //10초씩 쉰다.
+                Log.d("test", "서비스 작동중 ");
 
             }catch (Exception e) {}
+            refresh_item.refresh(items);
+            chvallu();
         }
+
     }
 
     /**
@@ -80,6 +86,23 @@ public class ServiceThread extends Thread {
     private void chvallu() {
         for (int i = 0; i < items.size(); i++) {
             boolean temp = items.get(i).getCurrentStatus();
+            Log.d("\n\n\nservice Thread","현제 포트 :"+items.get(i).getPort()+"현제 값 :"+items.get(i).getCurrentStatus());
+
+            if((!(preBuffer[i] == temp))&&outgoingMode){
+                if( items.get(i).getType() == 1){ // bulb
+                    if(temp){
+                        masage = "전등이 켜졌습니다!!";
+                    }else {
+                        masage = "전등이 꺼졌습니다!!";
+                    }
+                }else if(items.get(i).getType() == 2){
+                    if(temp){
+                        masage = "창문이 열렸습니다.!!";
+                    }else {
+                        masage = "창문이 닫혔습니다.!!";
+                    }
+                }
+            }
 
             sendNoTiy((preBuffer[i] == temp));
             preBuffer[i] = temp;
@@ -92,9 +115,10 @@ public class ServiceThread extends Thread {
      * @param flage 이전값과 현제 값이 같은값인지 검사
      */
     private void sendNoTiy(boolean flage){
-        if(!flage&&outgoingMode){
+        outgoingMode = IoTUtil.getoutGoingMode();
+        if(!flage && outgoingMode){
             handler.sendEmptyMessage(0);
+            Log.e("알람 알람 알람 ", "노티 노티 노티 !!");
         }
-
     }
 }

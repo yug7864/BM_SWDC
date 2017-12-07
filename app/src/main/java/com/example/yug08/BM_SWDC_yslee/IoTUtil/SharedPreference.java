@@ -1,4 +1,4 @@
-package com.example.yug08.BM_SWDC_yslee;
+package com.example.yug08.BM_SWDC_yslee.IoTUtil;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -37,11 +37,14 @@ public class IoTItem implements Serializable {
         이후 메서드는 값을 읽고 쓰고 위함 , 정보은닉
      */
 
-    public boolean getCurrentStatus() {
+    public int getType(){
+        return Type;
+    }
+    public synchronized boolean getCurrentStatus() {
         return currentStatus;
     }
 
-    public void setCurrentStatus(boolean on_off) {this.currentStatus = on_off;}
+    public synchronized void setCurrentStatus(boolean on_off) {this.currentStatus = on_off;}
 
     public int getImag_resId() {
         return imag_resId;
@@ -53,9 +56,9 @@ public class IoTItem implements Serializable {
 
     public void setNmae(String Name) {this.Nmae = Name;}
 
-    public void setPort(int portnum){this.port = portnum;}
+    public synchronized void setPort(int portnum){this.port = portnum;}
 
-    public int getPort(){return port;}
+    public synchronized int getPort(){return port;}
 
     public int Tpye(){
         return Type;

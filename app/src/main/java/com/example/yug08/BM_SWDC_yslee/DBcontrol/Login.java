@@ -1,7 +1,6 @@
 package com.example.yug08.BM_SWDC_yslee.DBcontrol;
 
 import android.content.Context;
-import android.content.Intent;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -12,7 +11,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.yug08.BM_SWDC_yslee.IoTUtil.IoTUtil;
-import com.example.yug08.BM_SWDC_yslee.MainAppActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,17 +24,20 @@ import java.util.Map;
 public class Login {
     private static String path = "/BM/user_control.php/";
     private  HashMap<String, String> parameta;
+    private Context context;
 
+    public  Login(Context context){
+        this.context = context;
+    }
 
-
-    public void login(Context context){
+    public void login(){
         final String URL = "http://" + IoTUtil.getIP() + path;
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         StringRequest request = new StringRequest(Request.Method.POST,
                 URL,
-                networkSuccessListener(context),
+                networkSuccessListener(),
                 networkErrorListener(context)
         ) {
             @Override
@@ -47,7 +48,7 @@ public class Login {
         requestQueue.add(request);
     }
 
-    private Response.Listener<String> networkSuccessListener(final Context context) {
+    private Response.Listener<String> networkSuccessListener() {
         return new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -60,9 +61,6 @@ public class Login {
                                 jsonObject.getString("success"),
                                 Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(context, MainAppActivity.class);
-                        context.startActivity(intent);
-
                     } else {
                         Toast.makeText(context,
                                 jsonObject.getString("error"),
@@ -74,6 +72,8 @@ public class Login {
             }
         };
     }
+
+
 
     /**
      * 실패시 행위 명세

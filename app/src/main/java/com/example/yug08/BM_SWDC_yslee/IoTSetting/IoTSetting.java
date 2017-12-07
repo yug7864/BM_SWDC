@@ -19,7 +19,9 @@ import com.example.yug08.BM_SWDC_yslee.MainAppActivity;
 import com.example.yug08.BM_SWDC_yslee.R;
 
 /**
+ * Item을 추가하기전 item의 파라미터를 정하기 위한 액티비티 함수
  * Created by yug08 on 2017-10-04.
+ * @author YSLEE
  */
 
 public class IoTSetting extends Activity {

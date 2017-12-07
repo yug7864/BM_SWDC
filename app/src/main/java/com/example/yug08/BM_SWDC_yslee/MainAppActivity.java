@@ -28,6 +28,7 @@ import com.example.yug08.BM_SWDC_yslee.DBcontrol.BackgroundService;
 import com.example.yug08.BM_SWDC_yslee.DBcontrol.VolleyRequestInstance;
 import com.example.yug08.BM_SWDC_yslee.IoTSetting.IoTSetting;
 import com.example.yug08.BM_SWDC_yslee.IoTUtil.IoTUtil;
+import com.example.yug08.BM_SWDC_yslee.IoTUtil.SharedPreference;
 import com.example.yug08.BM_SWDC_yslee.Item.IoTItem;
 import com.example.yug08.BM_SWDC_yslee.Item.IotAdapter;
 import com.example.yug08.BM_SWDC_yslee.Item.SingletonList;
