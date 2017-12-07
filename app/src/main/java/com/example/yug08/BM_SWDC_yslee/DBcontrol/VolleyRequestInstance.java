@@ -10,7 +10,7 @@ import com.android.volley.toolbox.Volley;
  */
 
 public class VolleyRequestInstance {
-    private static VolleyRequestInstance instance; /* singleton 써보자 */
+    private static VolleyRequestInstance instance; /* singleton 써보자 그편이 더 효율적이지 않을까?! */
     private RequestQueue requestQueue;
     private Context context;
 

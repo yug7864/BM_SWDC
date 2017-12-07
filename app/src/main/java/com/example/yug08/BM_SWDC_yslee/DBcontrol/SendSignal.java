@@ -43,7 +43,6 @@ public class SendSignal {
 
         sendSignal.setParameta(PORT,STATE);
 
-
         StringRequest request = new StringRequest(Request.Method.POST,
                 URL,
                 sendSignal.networkSuccessListener(),

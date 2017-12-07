@@ -102,7 +102,6 @@ public class ServiceThread extends Thread {
                     }
                 }
             }
-
             sendNoTiy((preBuffer[i] == temp));
             preBuffer[i] = temp;
         }

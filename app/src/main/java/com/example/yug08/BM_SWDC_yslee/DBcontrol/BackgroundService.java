@@ -57,7 +57,6 @@ public class BackgroundService extends Service {
 
     class myServiceHandler extends Handler {
 
-
         @Override
         public void handleMessage(android.os.Message msg) {
             Intent intent = new Intent(BackgroundService.this, MainAppActivity.class);
@@ -82,8 +81,6 @@ public class BackgroundService extends Service {
             Notifi_M.notify( 777 , notification);
 
             Toast.makeText(BackgroundService.this, serviceThread.getmasage(), Toast.LENGTH_SHORT).show();
-
-
         }
     };
 
