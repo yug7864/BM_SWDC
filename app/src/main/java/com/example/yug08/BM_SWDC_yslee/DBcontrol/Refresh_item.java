@@ -63,7 +63,7 @@ public class Refresh_item {
 
             /**
              와 이거 진짜 ... 너무 야매로 한거 같은데
-             내 머리로는 이런 방식 밖에 생각이 안납니다 .. 흐흑 ㅠㅠ
+             내 머리로는 이런 방식 밖에 생각이 안납니다 .. 미안하다 칭구들 ㅠㅠㅠ
              */
 
             StringRequest request = new StringRequest(Request.Method.POST,
@@ -82,21 +82,12 @@ public class Refresh_item {
     public void refresh(ArrayList<IoTItem> items) {
 
         IoTItem item;
-        /**
-         * 와 이거 진짜 너무 야매로 했다 ..
-         * 나중에 2차 제작에서 전체 테이블을 한번에 끌어온뒤
-         * 내부에서 값을 아이템에 나눠주는 방식으로 해봅시다 ....
-         */
+
         for (int i = 0; i < items.size(); i++) {
 
             item = items.get(i);
             final String PORT = String.valueOf(item.getPort());
             final int posi = i;
-
-            /**
-             와 이거 진짜 ... 너무 야매로 한거 같은데
-             내 머리로는 이런 방식 밖에 생각이 안납니다 .. 흐흑 ㅠㅠ
-             */
 
             StringRequest request = new StringRequest(Request.Method.POST,
                     URL,
