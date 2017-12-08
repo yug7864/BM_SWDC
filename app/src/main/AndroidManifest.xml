@@ -24,8 +24,6 @@
 
         <service android:name=".DBcontrol.BackgroundService"></service>
 
-
-
     </application>
 
 </manifest>

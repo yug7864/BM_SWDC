@@ -1,5 +1,7 @@
 package com.example.yug08.BM_SWDC_yslee.Item;
 
+import android.util.Log;
+
 import java.io.Serializable;
 
 // 리스트에 추가할 아이템 여기서 아이템은 센서당!
@@ -32,6 +34,9 @@ public class IoTItem implements Serializable {
             imag_resId = ONImagResid;
         else
             imag_resId = OffImagResid;
+
+        /*UnitTest 4 */
+        Log.d("UnitTest #UT4", "Bulb ONImagResid : "+String.valueOf(imag_resId));
     }
     /*
         이후 메서드는 값을 읽고 쓰고 위함 , 정보은닉

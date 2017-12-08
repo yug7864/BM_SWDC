@@ -2,7 +2,6 @@ package com.example.yug08.BM_SWDC_yslee.DBcontrol;
 
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 
 import com.example.yug08.BM_SWDC_yslee.IoTUtil.IoTUtil;
 import com.example.yug08.BM_SWDC_yslee.Item.IoTItem;
@@ -59,7 +58,7 @@ public class ServiceThread extends Thread {
         }
     }
 
-    public void stat(){
+    public void start(){
         synchronized (this){
             this.isrun = true;
         }
@@ -70,7 +69,6 @@ public class ServiceThread extends Thread {
         while(isrun){
             try{
                 Thread.sleep(500); //10초씩 쉰다.
-                Log.d("test", "서비스 작동중 ");
 
             }catch (Exception e) {}
             refresh_item.refresh(items);
@@ -85,7 +83,7 @@ public class ServiceThread extends Thread {
     private void chvallu() {
         for (int i = 0; i < items.size(); i++) {
             boolean temp = items.get(i).getCurrentStatus();
-            Log.d("\n\n\nservice Thread","현제 포트 :"+items.get(i).getPort()+"현제 값 :"+items.get(i).getCurrentStatus());
+
 
             if((!(preBuffer[i] == temp))&&outgoingMode){
                 if( items.get(i).getType() == 1){ // bulb
@@ -116,7 +114,7 @@ public class ServiceThread extends Thread {
         outgoingMode = IoTUtil.getoutGoingMode();
         if(!flage && outgoingMode){
             handler.sendEmptyMessage(0);
-            Log.e("알람 알람 알람 ", "노티 노티 노티 !!");
+
         }
     }
 }

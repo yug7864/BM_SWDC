@@ -1,6 +1,7 @@
 package com.example.yug08.BM_SWDC_yslee.DBcontrol;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -112,12 +113,20 @@ public class Refresh_item {
                     int s = Integer.parseInt(jsonObject.getString("state"));
                     item.setCurrentStatus(intToState(s));
                     item.chengeImag();
+
+                    /* UnitTest 1 port 번호로 확인하자! */
+                    Log.d("UnitTest #UT1","port :"+String.valueOf(item.getPort())+
+                            "state :"+String.valueOf(item.getCurrentStatus()));
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         };
     }
+
+
+
 
     private Response.Listener<String> networkSuccessListener(final  IoTItem item, final IotAdapter iotAdapter, final int posi) {
         return new Response.Listener<String>() {

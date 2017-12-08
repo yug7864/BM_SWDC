@@ -21,6 +21,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.yug08.BM_SWDC_yslee.IoTUtil.IoTUtil;
+import com.example.yug08.Test.UnitTest;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox loginDataSave;
     private EditText inputID, inputServer, inputPW;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.loginactivity);
+
+        UnitTest unitTest = new UnitTest();
+        unitTest.UnitTest5();
+        unitTest.UnitTest6();
 
 
         initview();

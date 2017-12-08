@@ -1,5 +1,7 @@
 package com.example.yug08.BM_SWDC_yslee.Item;
 
+import android.util.Log;
+
 import com.example.yug08.BM_SWDC_yslee.R;
 
 import java.io.Serializable;
@@ -24,5 +26,9 @@ public class WinItem extends IoTItem implements Serializable {
     private void initImgres() {
         ONImagResid = R.mipmap.win_on;
         OffImagResid = R.mipmap.win_off;
+
+        /*UnitTest 2 상속한거 확인해야 한다..... */
+        Log.d("UnitTest #UT2", "win ONImagResid : "+String.valueOf(ONImagResid));
+        Log.d("UnitTest #UT2", "win OffImagResid : "+String.valueOf(OffImagResid));
     }
 }
