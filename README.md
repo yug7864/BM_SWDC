@@ -29,13 +29,13 @@ UnitTest 는  보고서에 나와있는 각 메서드별로 "1-4"은 Log를 찍�
 	![ex_screenshot](./img/SGAB_03.png)
 	- Android Studio 에 프로젝트 파일을 열때 필요한 업데이트가 있다면 업데이트를 해야 합니다. 
 	![ex_screenshot](./img/SGAB_04.png)
-	- 프로젝트 파일이 열리면 상단의 Build 탭 - Make Build 를 클릭하여 프로젝트 파일을 Build 해 주십시요 
+	- 프로젝트 파일이 열리면 상단의 Build 탭 - Make Build 를 클릭하여 프로젝트 파일을 Build 해 주세요.
 	![ex_screenshot](./img/SGAB_05.png)
 	- 프로젝트 파일 Build 가 완료되면 축하드립니다. 이제부턴 프로젝트 파일을 사용하실 수 있습니다.
 	
 2. Home IoT System 설정 방법 입니다. 
 	- APM 환경 설정이 먼저 해주셔야 합니다. 
-	- BM_SWDC-master(Project Root)/app/src/main/java/com/example/yug08 의 경로에 들어가시면 "ETC" 디렉토리가 존제 합니다.
+	- BM_SWDC-master(Project Root)/app/src/main/java/com/example/yug08 의 경로에 들어가시면 "ETC" 디렉토리가 존재 합니다.
 	 해당 디렉토리 하부에 Arduino(HW_ardu) , Python(Use_Code) , PHP(BM) code 를 보관 하였습니다.
 	![ex_screenshot](./img/ETC.png)
 	- ETC 디렉토리 안의 "BM" 디렉토리를 복사하여 라즈베리파이의 var/www/html/ 경로로 복사해 주세요. ( 만약 실행이 안된다면 파일 권한을 변경하시기 바랍니다.)
