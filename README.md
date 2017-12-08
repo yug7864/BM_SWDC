@@ -30,6 +30,8 @@
 2. Home IoT System 설정 방법 입니다. 
 	- APM 환경 설정이 먼저 해주셔야 합니다. 
 	- BM_SWDC-master(Project Root)/app/src/main/java/com/example/yug08 의 경로에 들어가시면 "ETC" 디렉토리가 존제 합니다.
+	 해당 디렉토리 하부에 Arduino(HW_ardu) , Python(Use_Code) , PHP(BM) code 를 보관 하였습니다.
+	![ex_screenshot](./img/ETC.png)
 	- ETC 디렉토리 안의 "BM" 디렉토리를 복사하여 라즈베리파이의 var/www/html/ 경로로 복사해 주세요. ( 만약 실행이 안된다면 파일 권한을 변경하시기 바랍니다.)
 	- 보고서의 HW 센서를 제작한뒤 "ETC" 디렉토리의 "HW_ardu" 디렉토리의 "Lamp_swit.ino" 는 전등 스위치
 	- "Win_check.ino" 는 창문 스위치로 "Arduino IDE" 를 사용하여 컴파일후 업로드를 해주세요.
@@ -40,6 +42,16 @@
 축하드립니다. 이 모든 과정을 무사히 마치셨다면 여러분은 외부 에서 IP 번호를 사용하여 전등을 끄거나! 켤수 있습니다. 
 혹은 외출모드를 사용하여 방문자를 확인 할수도 있습니다. 
 	 
+
+
+Android App 설명서 입니다. 
+
+- 사용을 권장하는 IP : 203.255.57.91 , ID : admin , PW : admin
+- 로그인 화면 입니다. Remember ID 체크 박스를 체크 하시면 로그인 성공 이후 다음 로그인은 자동으로 진행되게 됩니다. 
+- 다른 ID를 사용 하시길 원하시면 안드로이드 백 버튼을 눌려 뒤로 가셔서 바꿔주실수 있습니다. 
+![ex_screenshot](./img/L.png)
+
+		
 			
 
 			
