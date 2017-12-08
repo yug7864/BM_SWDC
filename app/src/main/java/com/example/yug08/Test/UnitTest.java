@@ -15,7 +15,7 @@ import static com.example.yug08.BM_SWDC_yslee.IoTUtil.IoTUtil.steteToInt;
 public class UnitTest {
 
     public void UnitTest5(){
-
+  
         /* UnitTest 5 */
          if(steteToInt(true) == 1){
             Log.d("UnitTest 5_1"," 통과 입니다! " );
