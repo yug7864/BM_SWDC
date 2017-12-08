@@ -16,7 +16,7 @@
 - 네트워크 구성 		 : <IP static 설정>
 - 방화벽 			   : 80, 22, 23 열어줌 
 
-UnitTest 는  보고서에 나와있는 각 메서드별로 1~4번은 Log를 찍어 확인하고 5~6번은 UnitTest.class 를 만들어서 시도했습니다.
+UnitTest 는  보고서에 나와있는 각 메서드별로 "1-4"은 Log를 찍어 확인하고 "5,6"은 UnitTest.class 를 만들어서 시도했습니다.
 /* UnitTest */ 주석으로 찾으실수 있습니다. 	
 
 1. Android App 빌드 방법 입니다. 
