@@ -15,12 +15,16 @@
 
 1. Android App 빌드 방법 입니다. 
 	- 프로젝트 파일을 다운받아주세요.
-			Clone or download -> Download ZIP
+			Clone or download -> Download ZIP 
+			![ex_screenshot](./img/SGAB_01.png)
 
-	- 다운받은 ZIP 파일의 압축을 풀어주세요
-	- Android Studio 초기화면 에서 "Open an existing Android Studio project"을 통해 프로젝트 파일을 열어주세요.
+	- 다운받은 ZIP 파일의 압축을 풀어주세요	![ex_screenshot](./img/SGAB_02.png)
+	- Android Studio 초기화면 에서 "Open an existing Android Studio project"을 통해 프로젝트 파일을 열어주세요.  
+	![ex_screenshot](./img/SGAB_03.png)
 	- Android Studio 에 프로젝트 파일을 열때 필요한 업데이트가 있다면 업데이트를 해야 합니다. 
+	![ex_screenshot](./img/SGAB_04.png)
 	- 프로젝트 파일이 열리면 상단의 Build 탭 - Make Build 를 클릭하여 프로젝트 파일을 Build 해 주십시요 
+	![ex_screenshot](./img/SGAB_05.png)
 	- 프로젝트 파일 Build 가 완료되면 축하드립니다. 이제부턴 프로젝트 파일을 사용하실 수 있습니다.
 	
 2. Home IoT System 설정 방법 입니다. 
