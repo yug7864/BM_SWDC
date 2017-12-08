@@ -1,6 +1,9 @@
 # BM_SWDC
 
-반갑습니다. Black Mirror 입니다.  1차 버전을 올릴수 있어 매우 기쁩니다. 
+
+
+반갑습니다. Black Mirror 입니다.   결과를 올릴수 있어 매우 기쁩니다. 
+
 
 - Home IoT System Environment 
 - OS 				: raspbian-jessie
@@ -12,6 +15,9 @@
 - 원격접속 설치		 : 1. tightvncserver 2. xrdp
 - 네트워크 구성 		 : <IP static 설정>
 - 방화벽 			   : 80, 22, 23 열어줌 
+
+UnitTest 는  보고서에 나와있는 각 메서드별로 1~4번은 Log를 찍어 확인하고 5~6번은 UnitTest.class 를 만들어서 시도했습니다.
+/* UnitTest */ 주석으로 찾으실수 있습니다. 	
 
 1. Android App 빌드 방법 입니다. 
 	- 프로젝트 파일을 다운받아주세요.
@@ -78,4 +84,3 @@ Android App 설명서 입니다.
 ![ex_screenshot](./img/AM.png)
 
 - 외출 모드를 설정하고 전등을 수동으로 변경했을때 알람이 오는 것을 확인 하실 수 있습니다. 
-	
